@@ -27,7 +27,6 @@
             overflow-x: hidden;
         }
 
-        /* Efecto de fondo estilo circuito */
         body::before {
             content: '';
             position: fixed;
@@ -39,22 +38,22 @@
         header {
             padding: 20px 50px;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
             border-bottom: 1px solid rgba(0, 255, 102, 0.2);
         }
 
-        .logo {
-            font-family: 'Fira Code', monospace;
-            font-size: 1.5rem;
-            color: var(--neon-green);
-            text-shadow: 0 0 10px rgba(0, 255, 102, 0.5);
-            font-weight: bold;
+        /* Estilos para el logo actualizado */
+        .logo-container img {
+            height: 70px;
+            width: auto;
+            border-radius: 50%; /* Hace que el borde del logo se vea redondo si tiene fondo */
+            filter: drop-shadow(0 0 15px rgba(0, 255, 102, 0.5));
         }
 
         .hero {
             text-align: center;
-            padding: 100px 20px;
+            padding: 80px 20px 50px;
         }
 
         .hero h1 {
@@ -95,6 +94,19 @@
             box-shadow: 0 0 20px rgba(0, 255, 102, 0.8);
         }
 
+        /* Estilos para la nueva imagen promocional */
+        .hero-banner {
+            margin-top: 50px;
+        }
+
+        .hero-banner img {
+            max-width: 100%;
+            width: 500px; /* Tamaño ideal para que no ocupe toda la pantalla */
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 102, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 255, 102, 0.15);
+        }
+
         .section-title {
             text-align: center;
             font-size: 2.5rem;
@@ -102,7 +114,6 @@
             color: white;
         }
 
-        /* Grid de Servicios */
         .services {
             padding: 50px 10%;
             display: grid;
@@ -179,19 +190,28 @@
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
             .ig-link { font-size: 1.5rem; }
+            .hero-banner img { width: 90%; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">&lt;DW/&gt; DEV WEB</div>
+        <!-- Logo cargado desde la carpeta assets -->
+        <div class="logo-container">
+            <img src="assets/Gemini_Generated_Image_jfdpvujfdpvujfdp.png" alt="Logo de Dev Web">
+        </div>
     </header>
 
     <section class="hero">
         <h1>SOMOS <span>DEV WEB</span></h1>
         <p>Especialistas en Desarrollo Web & Software en la ciudad de Concepción. Transformamos ideas en soluciones digitales eficientes.</p>
         <a href="https://www.instagram.com/deb_web_ccp/?hl=es" target="_blank" class="btn">Contáctanos en Instagram</a>
+        
+        <!-- Imagen promocional cargada desde la carpeta assets -->
+        <div class="hero-banner">
+            <img src="assets/imagen2.png" alt="Servicios y Tecnologías Dev Web">
+        </div>
     </section>
 
     <section class="services">
