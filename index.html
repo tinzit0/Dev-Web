@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Web | Desarrollo Web en Concepción</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-green: #00ff66;
+            --dark-bg: #070a0e;
+            --card-bg: #111820;
+            --text-light: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Efecto de fondo estilo circuito */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: radial-gradient(circle at 50% 50%, rgba(0, 255, 102, 0.05) 0%, transparent 60%);
+            z-index: -1;
+        }
+
+        header {
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 255, 102, 0.2);
+        }
+
+        .logo {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.5rem;
+            color: var(--neon-green);
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.5);
+            font-weight: bold;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .hero h1 span {
+            color: var(--neon-green);
+            text-shadow: 0 0 15px rgba(0, 255, 102, 0.6);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+            color: #aaa;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            font-family: 'Fira Code', monospace;
+            color: var(--neon-green);
+            text-decoration: none;
+            border: 2px solid var(--neon-green);
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background-color: var(--neon-green);
+            color: var(--dark-bg);
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.8);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            color: white;
+        }
+
+        /* Grid de Servicios */
+        .services {
+            padding: 50px 10%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            padding: 40px 30px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(0, 255, 102, 0.1);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--neon-green);
+            box-shadow: 0 10px 30px rgba(0, 255, 102, 0.1);
+        }
+
+        .card-icon {
+            font-family: 'Fira Code', monospace;
+            font-size: 2.5rem;
+            color: var(--neon-green);
+            margin-bottom: 20px;
+        }
+
+        .about {
+            background-color: var(--card-bg);
+            padding: 80px 10%;
+            margin: 50px 0;
+            text-align: center;
+            border-top: 2px solid var(--neon-green);
+            border-bottom: 2px solid var(--neon-green);
+        }
+
+        .about p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .instagram-section {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .ig-link {
+            font-size: 2rem;
+            color: white;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            transition: color 0.3s;
+        }
+
+        .ig-link:hover {
+            color: var(--neon-green);
+            text-shadow: 0 0 10px var(--neon-green);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 1px solid rgba(0, 255, 102, 0.2);
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .ig-link { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">&lt;DW/&gt; DEV WEB</div>
+    </header>
+
+    <section class="hero">
+        <h1>SOMOS <span>DEV WEB</span></h1>
+        <p>Especialistas en Desarrollo Web & Software en la ciudad de Concepción. Transformamos ideas en soluciones digitales eficientes.</p>
+        <a href="https://www.instagram.com/deb_web_ccp/?hl=es" target="_blank" class="btn">Contáctanos en Instagram</a>
+    </section>
+
+    <section class="services">
+        <div class="card">
+            <div class="card-icon">&lt;/&gt;</div>
+            <h3>Desarrollo a Medida</h3>
+            <p>Construimos sitios web rápidos, seguros y completamente adaptados a las necesidades de su organización.</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">{ }</div>
+            <h3>Diseño Responsivo</h3>
+            <p>Interfaces atractivas y funcionales que ofrecen la mejor experiencia en computadoras, tablets y celulares.</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">SEO</div>
+            <h3>Optimización Digital</h3>
+            <p>Mejoramos la velocidad de carga y aplicamos buenas prácticas para potenciar su presencia digital.</p>
+        </div>
+    </section>
+
+    <section class="about">
+        <h2 class="section-title">Quiénes Somos</h2>
+        <p>
+            Hola, mucho gusto. Mi nombre es Martín Bustamante y, junto a mi compañero Felipe Zúñiga, somos estudiantes de Ingeniería Civil Informática (3er y 4to año) en la ciudad de Concepción.<br><br>
+            Nos dedicamos al desarrollo de páginas web y nos gustaría ofrecer nuestros servicios para apoyar a su organización en su presencia digital. Si tienen algún proyecto en mente o necesitan implementar un sitio web, no duden en contactarnos; estaremos encantados de conversar sobre cómo podemos ayudarles. ¡Saludos!
+        </p>
+    </section>
+
+    <section class="instagram-section">
+        <p style="color: #aaa; margin-bottom: 10px; font-family: 'Fira Code', monospace;">NUESTRA PRESENCIA DIGITAL</p>
+        <a href="https://www.instagram.com/deb_web_ccp/?hl=es" target="_blank" class="ig-link">
+            📸 @deb_web_ccp
+        </a>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Dev Web. Concepción, Chile. Todos los derechos reservados.</p>
+    </footer>
+
+</body>
+</html>
