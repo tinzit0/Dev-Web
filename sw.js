@@ -4,8 +4,8 @@ self.addEventListener("install", e => {
             return cache.addAll([
                 "./",
                 "./index.html",
-                "./assets/Gemini_Generated_Image_jfdpvujfdpvujfdp.png",
-                "./assets/Gemini_Generated_Image_pwhte4pwhte4pwht.png"
+                "./assets/imagen1.png",
+                "./assets/imagen2.png"
             ]);
         })
     );
