@@ -5,7 +5,7 @@ self.addEventListener("install", e => {
                 "./",
                 "./index.html",
                 "./assets/imagen1.png",
-                "./assets/imagen2.png"
+                "./assets/imagen2.jpg" 
             ]);
         })
     );

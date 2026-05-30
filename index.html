@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dev Web | Desarrollo Web en Concepción</title>
     
-    <!-- ETIQUETAS PWA (NUEVO) -->
+    <!-- ETIQUETAS PWA -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#00ff66">
-    <link rel="apple-touch-icon" href="assets/Gemini_Generated_Image_jfdpvujfdpvujfdp.png">
+    <link rel="apple-touch-icon" href="assets/imagen1.png">
     
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
     <style>
@@ -91,12 +91,27 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             font-weight: bold;
+            cursor: pointer;
+            margin: 5px;
+            background: transparent;
         }
 
         .btn:hover {
             background-color: var(--neon-green);
             color: var(--dark-bg);
             box-shadow: 0 0 20px rgba(0, 255, 102, 0.8);
+        }
+        
+        /* Estilo especial para el botón de instalar app */
+        #btnInstalar {
+            display: none; /* Se oculta por defecto, se muestra con JS */
+            background-color: white;
+            color: var(--dark-bg);
+            border-color: white;
+        }
+        #btnInstalar:hover {
+            background-color: var(--neon-green);
+            border-color: var(--neon-green);
         }
 
         .hero-banner {
@@ -243,9 +258,15 @@
     <section class="hero">
         <h1>SOMOS <span>DEV WEB</span></h1>
         <p>Especialistas en Desarrollo Web & Software en la ciudad de Concepción. Transformamos ideas en soluciones digitales eficientes.</p>
-        <a href="https://www.instagram.com/deb_web_ccp/?hl=es" target="_blank" class="btn">Contáctanos en Instagram</a>
+        
+        <div>
+            <a href="https://www.instagram.com/deb_web_ccp/?hl=es" target="_blank" class="btn">Contáctanos en Instagram</a>
+            <!-- BOTÓN PARA DESCARGAR LA APP -->
+            <button id="btnInstalar" class="btn">📲 Instalar App</button>
+        </div>
         
         <div class="hero-banner">
+            <!-- ARCHIVO CORREGIDO A .JPG -->
             <img src="assets/imagen2.png" alt="Servicios y Tecnologías Dev Web">
         </div>
     </section>
@@ -296,8 +317,9 @@
         <p>&copy; 2026 Dev Web. Concepción, Chile. Todos los derechos reservados.</p>
     </footer>
 
-    <!-- SCRIPT DEL SERVICE WORKER PARA LA APP (NUEVO) -->
+    <!-- SCRIPT DEL SERVICE WORKER Y BOTÓN DE INSTALACIÓN -->
     <script>
+        // 1. Registro del Service Worker
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker.register("sw.js").then(registration => {
                 console.log("Service Worker registrado con éxito");
@@ -305,6 +327,35 @@
                 console.log("Error al registrar el Service Worker", error);
             });
         }
+
+        // 2. Lógica del Botón de Instalación
+        let eventoInstalacion;
+        const btnInstalar = document.getElementById('btnInstalar');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevenir que Chrome muestre el aviso automático abajo
+            e.preventDefault();
+            // Guardar el evento para usarlo luego
+            eventoInstalacion = e;
+            // Mostrar nuestro botón personalizado
+            btnInstalar.style.display = 'inline-block';
+        });
+
+        btnInstalar.addEventListener('click', async () => {
+            if (!eventoInstalacion) {
+                return;
+            }
+            // Mostrar el prompt de instalación nativo del sistema
+            eventoInstalacion.prompt();
+            // Esperar a que el usuario responda al prompt
+            const { outcome } = await eventoInstalacion.userChoice;
+            if (outcome === 'accepted') {
+                console.log('El usuario aceptó instalar la app');
+                btnInstalar.style.display = 'none'; // Ocultar el botón si ya instaló
+            }
+            // Limpiar la variable
+            eventoInstalacion = null;
+        });
     </script>
 
 </body>
