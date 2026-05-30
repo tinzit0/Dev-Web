@@ -1,0 +1,17 @@
+{
+  "name": "Dev Web Concepción",
+  "short_name": "Dev Web",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#070a0e",
+  "theme_color": "#00ff66",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./assets/Gemini_Generated_Image_jfdpvujfdpvujfdp.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

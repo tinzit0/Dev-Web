@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dev Web | Desarrollo Web en Concepción</title>
+    
+    <!-- ETIQUETAS PWA (NUEVO) -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#00ff66">
+    <link rel="apple-touch-icon" href="assets/Gemini_Generated_Image_jfdpvujfdpvujfdp.png">
+    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -141,7 +147,6 @@
             margin-bottom: 20px;
         }
 
-        /* ESTILOS PARA LA NUEVA SECCIÓN DE PORTAFOLIO / PROYECTO */
         .portfolio {
             padding: 50px 20px;
             text-align: center;
@@ -231,7 +236,7 @@
 
     <header>
         <div class="logo-container">
-            <img src="assets/imagen1.png" alt="Logo de Dev Web">
+            <img src="assets/Gemini_Generated_Image_jfdpvujfdpvujfdp.png" alt="Logo de Dev Web">
         </div>
     </header>
 
@@ -241,7 +246,7 @@
         <a href="https://www.instagram.com/deb_web_ccp/?hl=es" target="_blank" class="btn">Contáctanos en Instagram</a>
         
         <div class="hero-banner">
-            <img src="assets/imagen2.png" alt="Servicios y Tecnologías Dev Web">
+            <img src="assets/Gemini_Generated_Image_pwhte4pwhte4pwht.png" alt="Servicios y Tecnologías Dev Web">
         </div>
     </section>
 
@@ -263,7 +268,6 @@
         </div>
     </section>
 
-    <!-- NUEVA SECCIÓN: ÚLTIMO PROYECTO -->
     <section class="portfolio">
         <h2 class="section-title">Nuestro Trabajo</h2>
         <div class="project-card">
@@ -291,6 +295,17 @@
     <footer>
         <p>&copy; 2026 Dev Web. Concepción, Chile. Todos los derechos reservados.</p>
     </footer>
+
+    <!-- SCRIPT DEL SERVICE WORKER PARA LA APP (NUEVO) -->
+    <script>
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("sw.js").then(registration => {
+                console.log("Service Worker registrado con éxito");
+            }).catch(error => {
+                console.log("Error al registrar el Service Worker", error);
+            });
+        }
+    </script>
 
 </body>
 </html>
