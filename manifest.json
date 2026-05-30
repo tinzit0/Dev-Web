@@ -1,6 +1,7 @@
 {
   "name": "Dev Web Concepción",
   "short_name": "Dev Web",
+  "description": "Especialistas en Desarrollo Web & Software en Concepción, Chile.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#070a0e",

@@ -4,371 +4,704 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dev Web | Desarrollo Web en Concepción</title>
-    
-    <!-- ETIQUETAS PWA -->
+
+    <!-- PWA -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#00ff66">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Dev Web">
     <link rel="apple-touch-icon" href="assets/imagen1.png">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
+
+    <!-- SEO -->
+    <meta name="description" content="Especialistas en Desarrollo Web & Software en Concepción, Chile. Transformamos ideas en soluciones digitales eficientes.">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
+
     <style>
+        /* ─── TOKENS ─────────────────────────────────── */
         :root {
-            --neon-green: #00ff66;
-            --dark-bg: #070a0e;
-            --card-bg: #111820;
-            --text-light: #e0e0e0;
+            --neon:      #00ff66;
+            --neon-dim:  rgba(0, 255, 102, 0.15);
+            --neon-glow: rgba(0, 255, 102, 0.55);
+            --bg:        #070a0e;
+            --card-bg:   #0d1520;
+            --card-border: rgba(0, 255, 102, 0.12);
+            --text:      #dde6ef;
+            --muted:     #6b7f94;
+            --radius:    12px;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        /* ─── RESET ──────────────────────────────────── */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
-            background-color: var(--dark-bg);
-            color: var(--text-light);
+            background-color: var(--bg);
+            color: var(--text);
             font-family: 'Poppins', sans-serif;
-            line-height: 1.6;
+            line-height: 1.65;
             overflow-x: hidden;
         }
 
+        /* Ambient background glow */
         body::before {
             content: '';
             position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background-image: radial-gradient(circle at 50% 50%, rgba(0, 255, 102, 0.05) 0%, transparent 60%);
-            z-index: -1;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,255,102,0.07) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 30% at 85% 80%, rgba(0,255,102,0.04) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
         }
 
+        /* Scanline texture overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0,0,0,0.03) 2px,
+                rgba(0,0,0,0.03) 4px
+            );
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ─── UTILITY ─────────────────────────────────── */
+        .container {
+            width: min(1100px, 92%);
+            margin-inline: auto;
+        }
+
+        .neon { color: var(--neon); }
+
+        .tag {
+            display: inline-block;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            color: var(--neon);
+            background: var(--neon-dim);
+            border: 1px solid rgba(0,255,102,0.25);
+            padding: 3px 12px;
+            border-radius: 50px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+
+        /* ─── HEADER ─────────────────────────────────── */
         header {
-            padding: 20px 50px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(0,255,102,0.1);
+            backdrop-filter: blur(18px) saturate(150%);
+            background: rgba(7,10,14,0.75);
+        }
+
+        header .container {
             display: flex;
-            justify-content: flex-start;
             align-items: center;
-            border-bottom: 1px solid rgba(0, 255, 102, 0.2);
+            justify-content: space-between;
+            gap: 16px;
         }
 
-        .logo-container img {
-            height: 70px;
-            width: auto;
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
+
+        .logo-wrap img {
+            height: 48px;
+            width: 48px;
             border-radius: 50%;
-            filter: drop-shadow(0 0 15px rgba(0, 255, 102, 0.5));
+            object-fit: cover;
+            border: 2px solid rgba(0,255,102,0.4);
+            filter: drop-shadow(0 0 8px rgba(0,255,102,0.4));
+            transition: filter 0.3s;
         }
 
+        .logo-wrap:hover img {
+            filter: drop-shadow(0 0 16px rgba(0,255,102,0.8));
+        }
+
+        .logo-text {
+            font-family: 'Fira Code', monospace;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #fff;
+            letter-spacing: 0.04em;
+        }
+
+        .logo-text span { color: var(--neon); }
+
+        nav {
+            display: flex;
+            gap: 28px;
+        }
+
+        nav a {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--muted);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+            transition: color 0.25s;
+        }
+
+        nav a:hover { color: var(--neon); }
+
+        /* ─── HERO ───────────────────────────────────── */
         .hero {
+            position: relative;
+            z-index: 1;
+            padding: 100px 0 70px;
             text-align: center;
-            padding: 80px 20px 50px;
         }
 
         .hero h1 {
-            font-size: 4rem;
-            color: white;
-            margin-bottom: 10px;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
         }
 
-        .hero h1 span {
-            color: var(--neon-green);
-            text-shadow: 0 0 15px rgba(0, 255, 102, 0.6);
+        .hero h1 .neon {
+            text-shadow:
+                0 0 20px rgba(0,255,102,0.6),
+                0 0 60px rgba(0,255,102,0.2);
         }
 
         .hero p {
-            font-size: 1.2rem;
-            max-width: 600px;
-            margin: 0 auto 30px auto;
-            color: #aaa;
+            font-size: 1.1rem;
+            color: var(--muted);
+            max-width: 540px;
+            margin: 0 auto 36px;
+            font-weight: 300;
         }
 
+        /* ─── BUTTONS ────────────────────────────────── */
         .btn {
-            display: inline-block;
-            padding: 15px 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 13px 28px;
             font-family: 'Fira Code', monospace;
-            color: var(--neon-green);
-            text-decoration: none;
-            border: 2px solid var(--neon-green);
-            border-radius: 5px;
-            transition: all 0.3s ease;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: bold;
-            cursor: pointer;
+            text-decoration: none;
+            color: var(--neon);
             background: transparent;
+            border: 1.5px solid var(--neon);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            white-space: nowrap;
         }
 
         .btn:hover {
-            background-color: var(--neon-green);
-            color: var(--dark-bg);
-            box-shadow: 0 0 20px rgba(0, 255, 102, 0.8);
+            background: var(--neon);
+            color: var(--bg);
+            box-shadow: 0 0 28px var(--neon-glow), 0 0 60px rgba(0,255,102,0.15);
+            transform: translateY(-2px);
         }
 
+        .btn:active { transform: translateY(0); }
+
+        .btn-solid {
+            background: var(--neon);
+            color: var(--bg);
+        }
+
+        .btn-solid:hover {
+            background: transparent;
+            color: var(--neon);
+        }
+
+        /* ─── HERO BANNER ────────────────────────────── */
         .hero-banner {
-            margin-top: 50px;
+            margin-top: 60px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(0,255,102,0.5), transparent 50%, rgba(0,255,102,0.2));
+            z-index: -1;
+            filter: blur(1px);
         }
 
         .hero-banner img {
-            max-width: 100%;
-            width: 500px;
-            border-radius: 15px;
-            border: 1px solid rgba(0, 255, 102, 0.3);
-            box-shadow: 0 10px 30px rgba(0, 255, 102, 0.15);
+            display: block;
+            width: min(520px, 90vw);
+            border-radius: 16px;
+            border: 1px solid rgba(0,255,102,0.25);
+            box-shadow:
+                0 20px 60px rgba(0,0,0,0.6),
+                0 0 40px rgba(0,255,102,0.1);
+        }
+
+        /* ─── SECTION COMMON ─────────────────────────── */
+        section {
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-label {
+            text-align: center;
+            margin-bottom: 12px;
         }
 
         .section-title {
             text-align: center;
-            font-size: 2.5rem;
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            font-weight: 800;
+            color: #fff;
             margin-bottom: 50px;
-            color: white;
         }
 
-        .services {
-            padding: 50px 10%;
+        /* ─── SERVICES ───────────────────────────────── */
+        .services-section {
+            padding: 90px 0;
+        }
+
+        .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
         }
 
         .card {
-            background-color: var(--card-bg);
-            padding: 40px 30px;
-            border-radius: 10px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius);
+            padding: 40px 32px;
             text-align: center;
-            border: 1px solid rgba(0, 255, 102, 0.1);
-            transition: transform 0.3s ease, border-color 0.3s ease;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         .card:hover {
-            transform: translateY(-10px);
-            border-color: var(--neon-green);
-            box-shadow: 0 10px 30px rgba(0, 255, 102, 0.1);
+            transform: translateY(-8px);
+            border-color: rgba(0,255,102,0.45);
+            box-shadow: 0 16px 40px rgba(0,255,102,0.08), 0 0 0 1px rgba(0,255,102,0.1);
         }
 
         .card-icon {
             font-family: 'Fira Code', monospace;
-            font-size: 2.5rem;
-            color: var(--neon-green);
+            font-size: 2rem;
+            color: var(--neon);
             margin-bottom: 20px;
+            display: block;
+            text-shadow: 0 0 20px rgba(0,255,102,0.4);
         }
 
-        .portfolio {
-            padding: 50px 20px 20px;
-            text-align: center;
+        .card h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            color: var(--muted);
+            font-size: 0.93rem;
+            line-height: 1.7;
+        }
+
+        /* ─── DIVIDER ─────────────────────────────────── */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0,255,102,0.2), transparent);
+            margin: 0 auto;
+            width: 80%;
+        }
+
+        /* ─── PORTFOLIO ──────────────────────────────── */
+        .portfolio-section {
+            padding: 90px 0;
         }
 
         .project-card {
-            background-color: var(--card-bg);
-            padding: 50px 30px;
-            border-radius: 15px;
-            border: 2px solid var(--neon-green);
-            max-width: 600px;
+            background: var(--card-bg);
+            border: 1.5px solid var(--neon);
+            border-radius: 18px;
+            padding: 56px 40px;
+            max-width: 620px;
             margin: 0 auto;
-            box-shadow: 0 0 30px rgba(0, 255, 102, 0.2);
-            transition: transform 0.3s ease;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(0,255,102,0.08), inset 0 0 60px rgba(0,255,102,0.02);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
         .project-card:hover {
             transform: scale(1.02);
-            box-shadow: 0 0 40px rgba(0, 255, 102, 0.4);
+            box-shadow: 0 0 60px rgba(0,255,102,0.18), inset 0 0 60px rgba(0,255,102,0.04);
         }
 
-        .project-card p {
-            color: #aaa;
-            font-size: 1.1rem;
-            margin-bottom: 15px;
+        .project-card .eyebrow {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
         }
 
         .project-card h3 {
-            font-family: 'Fira Code', monospace;
-            font-size: 2rem;
-            color: white;
-            margin-bottom: 30px;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.02em;
+            margin-bottom: 28px;
         }
 
-        /* NUEVA SECCIÓN DE DESCARGA */
-        .app-download-section {
-            display: none; /* Oculta por defecto, se activa con JS */
-            text-align: center;
-            padding: 40px 20px;
-            margin: 20px auto 50px;
+        /* ─── PWA INSTALL ─────────────────────────────── */
+        #seccionApp {
+            display: block;
+            margin: 0 auto 60px;
             max-width: 600px;
-            background-color: rgba(0, 255, 102, 0.05);
-            border-radius: 15px;
-            border: 1px dashed var(--neon-green);
-        }
-
-        .app-download-section p {
-            color: #aaa;
-            margin-bottom: 20px;
-            font-size: 1.1rem;
-        }
-
-        .about {
-            background-color: var(--card-bg);
-            padding: 80px 10%;
-            margin: 50px 0;
+            padding: 44px 36px;
             text-align: center;
-            border-top: 2px solid var(--neon-green);
-            border-bottom: 2px solid var(--neon-green);
+            background: linear-gradient(135deg, rgba(0,255,102,0.04), transparent);
+            border: 1px dashed rgba(0,255,102,0.35);
+            border-radius: 18px;
         }
 
-        .about p {
-            font-size: 1.2rem;
-            max-width: 800px;
+        #seccionApp h2 {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        #seccionApp p {
+            color: var(--muted);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+        }
+
+        /* ─── ABOUT ──────────────────────────────────── */
+        .about-section {
+            padding: 90px 0;
+            background: var(--card-bg);
+            border-top: 1px solid rgba(0,255,102,0.15);
+            border-bottom: 1px solid rgba(0,255,102,0.15);
+        }
+
+        .about-inner {
+            max-width: 780px;
             margin: 0 auto;
-            line-height: 1.8;
+            text-align: center;
         }
 
-        .instagram-section {
+        .founders {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+
+        .founder-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0,255,102,0.07);
+            border: 1px solid rgba(0,255,102,0.2);
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.82rem;
+            color: var(--neon);
+        }
+
+        .about-section p {
+            color: var(--muted);
+            font-size: 1.05rem;
+            line-height: 1.85;
+        }
+
+        /* ─── INSTAGRAM ──────────────────────────────── */
+        .ig-section {
+            padding: 80px 0;
             text-align: center;
-            padding: 50px 20px;
+        }
+
+        .ig-label {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            color: var(--muted);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 18px;
         }
 
         .ig-link {
-            font-size: 2rem;
-            color: white;
-            text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 15px;
-            transition: color 0.3s;
+            gap: 14px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.25s, text-shadow 0.25s;
         }
 
         .ig-link:hover {
-            color: var(--neon-green);
-            text-shadow: 0 0 10px var(--neon-green);
+            color: var(--neon);
+            text-shadow: 0 0 20px rgba(0,255,102,0.5);
         }
 
+        /* ─── FOOTER ─────────────────────────────────── */
         footer {
+            border-top: 1px solid rgba(0,255,102,0.1);
+            padding: 28px 0;
             text-align: center;
-            padding: 30px;
-            border-top: 1px solid rgba(0, 255, 102, 0.2);
-            font-size: 0.9rem;
-            color: #666;
         }
 
+        footer p {
+            font-size: 0.82rem;
+            color: var(--muted);
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* ─── ANIMATIONS ─────────────────────────────── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero h1    { animation: fadeUp 0.7s ease both; }
+        .hero p     { animation: fadeUp 0.7s 0.15s ease both; }
+        .hero .btn  { animation: fadeUp 0.7s 0.25s ease both; }
+        .hero-banner { animation: fadeUp 0.9s 0.35s ease both; }
+
+        @keyframes pulse-border {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(0,255,102,0); }
+            50%       { box-shadow: 0 0 0 6px rgba(0,255,102,0.12); }
+        }
+
+        #btnInstalar { animation: pulse-border 2.5s infinite; }
+
+        /* ─── RESPONSIVE ─────────────────────────────── */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            .ig-link { font-size: 1.5rem; }
-            .hero-banner img { width: 90%; }
+            nav { display: none; }
+            .hero { padding: 70px 0 50px; }
+            .project-card { padding: 40px 24px; }
+            #seccionApp { margin-inline: 16px; }
+            .ig-link { font-size: 1.3rem; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo-container">
-            <img src="assets/imagen1.png" alt="Logo de Dev Web">
-        </div>
-    </header>
+<!-- ══════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════ -->
+<header>
+    <div class="container">
+        <a href="#" class="logo-wrap">
+            <img src="assets/imagen1.png" alt="Logo Dev Web">
+            <span class="logo-text">DEV<span>.</span>WEB</span>
+        </a>
+        <nav>
+            <a href="#servicios">Servicios</a>
+            <a href="#portafolio">Portafolio</a>
+            <a href="#nosotros">Nosotros</a>
+            <a href="https://www.instagram.com/deb_web_ccp/?hl=es" target="_blank" rel="noopener">Instagram</a>
+        </nav>
+    </div>
+</header>
 
-    <section class="hero">
-        <h1>SOMOS <span>DEV WEB</span></h1>
-        <p>Especialistas en Desarrollo Web & Software en la ciudad de Concepción. Transformamos ideas en soluciones digitales eficientes.</p>
-        
-        <div>
-            <a href="https://www.instagram.com/deb_web_ccp/?hl=es" target="_blank" class="btn">Contáctanos en Instagram</a>
-        </div>
-        
+<!-- ══════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════ -->
+<section class="hero">
+    <div class="container">
+        <div class="tag">// Concepción, Chile</div>
+        <h1>SOMOS<br><span class="neon">DEV WEB</span></h1>
+        <p>Especialistas en Desarrollo Web &amp; Software. Transformamos ideas en soluciones digitales eficientes y de alto impacto.</p>
+        <a href="https://www.instagram.com/deb_web_ccp/?hl=es" target="_blank" rel="noopener" class="btn btn-solid">
+            📸 Contáctanos en Instagram
+        </a>
         <div class="hero-banner">
             <img src="assets/imagen2.jpg" alt="Servicios y Tecnologías Dev Web">
         </div>
-    </section>
+    </div>
+</section>
 
-    <section class="services">
-        <div class="card">
-            <div class="card-icon">&lt;/&gt;</div>
-            <h3>Desarrollo a Medida</h3>
-            <p>Construimos sitios web rápidos, seguros y completamente adaptados a las necesidades de su organización.</p>
+<!-- ══════════════════════════════════════════
+     SERVICES
+═══════════════════════════════════════════ -->
+<section class="services-section" id="servicios">
+    <div class="container">
+        <div class="section-label"><span class="tag">// Nuestros Servicios</span></div>
+        <h2 class="section-title">¿Qué Hacemos?</h2>
+        <div class="services-grid">
+            <div class="card">
+                <span class="card-icon">&lt;/&gt;</span>
+                <h3>Desarrollo a Medida</h3>
+                <p>Construimos sitios web rápidos, seguros y completamente adaptados a las necesidades de su organización.</p>
+            </div>
+            <div class="card">
+                <span class="card-icon">{ }</span>
+                <h3>Diseño Responsivo</h3>
+                <p>Interfaces atractivas y funcionales que ofrecen la mejor experiencia en computadoras, tablets y celulares.</p>
+            </div>
+            <div class="card">
+                <span class="card-icon">SEO</span>
+                <h3>Optimización Digital</h3>
+                <p>Mejoramos la velocidad de carga y aplicamos buenas prácticas para potenciar su presencia digital.</p>
+            </div>
         </div>
-        <div class="card">
-            <div class="card-icon">{ }</div>
-            <h3>Diseño Responsivo</h3>
-            <p>Interfaces atractivas y funcionales que ofrecen la mejor experiencia en computadoras, tablets y celulares.</p>
-        </div>
-        <div class="card">
-            <div class="card-icon">SEO</div>
-            <h3>Optimización Digital</h3>
-            <p>Mejoramos la velocidad de carga y aplicamos buenas prácticas para potenciar su presencia digital.</p>
-        </div>
-    </section>
+    </div>
+</section>
 
-    <section class="portfolio">
+<div class="divider"></div>
+
+<!-- ══════════════════════════════════════════
+     PORTFOLIO
+═══════════════════════════════════════════ -->
+<section class="portfolio-section" id="portafolio">
+    <div class="container">
+        <div class="section-label"><span class="tag">// Portafolio</span></div>
         <h2 class="section-title">Nuestro Trabajo</h2>
         <div class="project-card">
-            <p>Este es el último proyecto que hemos desarrollado:</p>
+            <p class="eyebrow">Último proyecto desarrollado</p>
             <h3>Donato Studio</h3>
-            <a href="https://donatostudio.vercel.app/" target="_blank" class="btn">Visitar Proyecto Web</a>
+            <a href="https://donatostudio.vercel.app/" target="_blank" rel="noopener" class="btn">
+                🔗 Visitar Proyecto Web
+            </a>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- SECCIÓN DE DESCARGA DE APP DEBAJO DE LOS PROYECTOS -->
-    <section class="app-download-section" id="seccionApp">
-        <h2 style="color: white; font-size: 1.8rem; margin-bottom: 10px;">📱 Lleva a Dev Web contigo</h2>
-        <p>Ten acceso directo a nuestra agencia instalando la aplicación en tu dispositivo.</p>
-        <button id="btnInstalar" class="btn">📲 Descarga nuestra app aquí</button>
+<!-- ══════════════════════════════════════════
+     PWA INSTALL
+═══════════════════════════════════════════ -->
+<div class="container">
+    <section id="seccionApp">
+        <h2>📱 Lleva a Dev Web contigo</h2>
+        <p>Instala nuestra app directamente en tu dispositivo para acceso rápido sin abrir el navegador.</p>
+        <button id="btnInstalar" class="btn">📲 Descargar nuestra app</button>
     </section>
+</div>
 
-    <section class="about">
-        <h2 class="section-title">Quiénes Somos</h2>
-        <p>
-            Hola, mucho gusto. Mi nombre es Martín Bustamante y, junto a mi compañero Felipe Zúñiga, somos estudiantes de Ingeniería Civil Informática (3er y 4to año) en la ciudad de Concepción.<br><br>
-            Nos dedicamos al desarrollo de páginas web y nos gustaría ofrecer nuestros servicios para apoyar a su organización en su presencia digital. Si tienen algún proyecto en mente o necesitan implementar un sitio web, no duden en contactarnos; estaremos encantados de conversar sobre cómo podemos ayudarles. ¡Saludos!
-        </p>
-    </section>
+<div class="divider"></div>
 
-    <section class="instagram-section">
-        <p style="color: #aaa; margin-bottom: 10px; font-family: 'Fira Code', monospace;">NUESTRA PRESENCIA DIGITAL</p>
-        <a href="https://www.instagram.com/deb_web_ccp/?hl=es" target="_blank" class="ig-link">
+<!-- ══════════════════════════════════════════
+     ABOUT
+═══════════════════════════════════════════ -->
+<section class="about-section" id="nosotros">
+    <div class="container">
+        <div class="about-inner">
+            <div class="section-label"><span class="tag">// Quiénes Somos</span></div>
+            <h2 class="section-title">El Equipo</h2>
+            <div class="founders">
+                <span class="founder-chip">👨‍💻 Martín Bustamante</span>
+                <span class="founder-chip">👨‍💻 Felipe Zúñiga</span>
+            </div>
+            <p>
+                Hola, mucho gusto. Somos Martín y Felipe, estudiantes de Ingeniería Civil Informática (3er y 4to año) en la ciudad de Concepción. Nos dedicamos al desarrollo de páginas web y nos gustaría ofrecer nuestros servicios para apoyar a su organización en su presencia digital.<br><br>
+                Si tienen algún proyecto en mente o necesitan implementar un sitio web, no duden en contactarnos. Estaremos encantados de conversar sobre cómo podemos ayudarles. ¡Saludos!
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     INSTAGRAM
+═══════════════════════════════════════════ -->
+<section class="ig-section">
+    <div class="container">
+        <p class="ig-label">Nuestra Presencia Digital</p>
+        <a href="https://www.instagram.com/deb_web_ccp/?hl=es" target="_blank" rel="noopener" class="ig-link">
             📸 @deb_web_ccp
         </a>
-    </section>
+    </div>
+</section>
 
-    <footer>
-        <p>&copy; 2026 Dev Web. Concepción, Chile. Todos los derechos reservados.</p>
-    </footer>
+<!-- ══════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════ -->
+<footer>
+    <div class="container">
+        <p>&copy; 2026 Dev Web — Concepción, Chile. Todos los derechos reservados.</p>
+    </div>
+</footer>
 
-    <!-- SCRIPT DEL SERVICE WORKER Y LÓGICA DE INSTALACIÓN -->
-    <script>
-        // 1. Registro del Service Worker
-        if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.register("sw.js").then(registration => {
-                console.log("Service Worker registrado con éxito");
-            }).catch(error => {
-                console.log("Error al registrar el Service Worker", error);
-            });
+<!-- ══════════════════════════════════════════
+     SCRIPTS
+═══════════════════════════════════════════ -->
+<script>
+    // ── 1. Service Worker Registration ──────────────
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("sw.js")
+            .then(() => console.log("[PWA] Service Worker registrado."))
+            .catch(err => console.warn("[PWA] Error al registrar SW:", err));
+    }
+
+    // ── 2. PWA Install Logic ─────────────────────────
+    let deferredPrompt = null;
+    const btnInstalar  = document.getElementById("btnInstalar");
+    const seccionApp   = document.getElementById("seccionApp");
+
+    // Capture the native install event (Chrome / Edge / Android)
+    window.addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        // Highlight the section with a subtle animation
+        seccionApp.style.borderColor = "var(--neon)";
+    });
+
+    btnInstalar.addEventListener("click", async () => {
+        if (deferredPrompt) {
+            // Show the native install dialog
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+
+            if (outcome === "accepted") {
+                console.log("[PWA] El usuario instaló la aplicación.");
+                seccionApp.style.display = "none";
+            } else {
+                console.log("[PWA] El usuario declinó la instalación.");
+            }
+
+            deferredPrompt = null;
+        } else {
+            // iOS / Samsung Browser / already installed — manual instructions
+            alert(
+                "📱 Tu navegador no permite la instalación automática.\n\n" +
+                "Para instalar la app de forma manual:\n\n" +
+                "▸ iOS Safari: Toca el botón compartir (□↑) y luego 'Añadir a pantalla de inicio'.\n" +
+                "▸ Android Chrome: Toca el menú (⋮) y selecciona 'Añadir a pantalla de inicio'.\n" +
+                "▸ Escritorio Chrome/Edge: Busca el ícono ⊕ en la barra de direcciones.\n\n" +
+                "¡Gracias por querer tener Dev Web siempre a mano!"
+            );
         }
+    });
 
-        // 2. Lógica de la Sección de Instalación
-        let eventoInstalacion;
-        const seccionApp = document.getElementById('seccionApp');
-        const btnInstalar = document.getElementById('btnInstalar');
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            // Prevenir que Chrome muestre el aviso automático
-            e.preventDefault();
-            // Guardar el evento para usarlo al hacer clic
-            eventoInstalacion = e;
-            // Mostrar la sección completa de descarga
-            seccionApp.style.display = 'block';
-        });
-
-        btnInstalar.addEventListener('click', async () => {
-            if (!eventoInstalacion) {
-                return;
-            }
-            // Mostrar el cuadro de diálogo de instalación del sistema
-            eventoInstalacion.prompt();
-            
-            // Esperar la respuesta del usuario
-            const { outcome } = await eventoInstalacion.userChoice;
-            if (outcome === 'accepted') {
-                console.log('El usuario instaló la aplicación');
-                // Ocultar la sección si la instalación fue exitosa
-                seccionApp.style.display = 'none';
-            }
-            // Limpiar la variable
-            eventoInstalacion = null;
-        });
-    </script>
+    // ── 3. After install: hide the section ──────────
+    window.addEventListener("appinstalled", () => {
+        seccionApp.style.display = "none";
+        console.log("[PWA] App instalada con éxito.");
+    });
+</script>
 
 </body>
 </html>
