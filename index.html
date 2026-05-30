@@ -12,499 +12,527 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Dev Web">
     <link rel="apple-touch-icon" href="assets/imagen1.png">
-
-    <!-- SEO -->
-    <meta name="description" content="Especialistas en Desarrollo Web & Software en Concepción, Chile. Transformamos ideas en soluciones digitales eficientes.">
+    <meta name="description" content="Especialistas en Desarrollo Web & Software en Concepción, Chile.">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
 
     <style>
-        /* ─── TOKENS ─────────────────────────────────── */
+        /* ══════════════════════════════════════════
+           TOKENS
+        ══════════════════════════════════════════ */
         :root {
-            --neon:      #00ff66;
-            --neon-dim:  rgba(0, 255, 102, 0.15);
-            --neon-glow: rgba(0, 255, 102, 0.55);
-            --bg:        #070a0e;
-            --card-bg:   #0d1520;
-            --card-border: rgba(0, 255, 102, 0.12);
-            --text:      #dde6ef;
-            --muted:     #6b7f94;
-            --radius:    12px;
+            --neon:        #00ff66;
+            --neon-dim:    rgba(0,255,102,0.12);
+            --neon-mid:    rgba(0,255,102,0.30);
+            --neon-glow:   rgba(0,255,102,0.55);
+            --bg:          #060910;
+            --bg2:         #0a0f1a;
+            --card:        #0d1521;
+            --card-border: rgba(0,255,102,0.10);
+            --text:        #d8e8f0;
+            --muted:       #5a7080;
+            --r:           14px;
         }
 
-        /* ─── RESET ──────────────────────────────────── */
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        /* ══════════════════════════════════════════
+           BASE
+        ══════════════════════════════════════════ */
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
         html { scroll-behavior: smooth; }
 
         body {
-            background-color: var(--bg);
+            background: var(--bg);
             color: var(--text);
             font-family: 'Poppins', sans-serif;
-            line-height: 1.65;
+            line-height: 1.7;
             overflow-x: hidden;
         }
 
-        /* Ambient background glow */
+        /* Multi-layer ambient background */
         body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
+            content:'';
+            position:fixed; inset:0; z-index:0; pointer-events:none;
             background:
-                radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,255,102,0.07) 0%, transparent 70%),
-                radial-gradient(ellipse 40% 30% at 85% 80%, rgba(0,255,102,0.04) 0%, transparent 60%);
-            pointer-events: none;
-            z-index: 0;
+                radial-gradient(ellipse 90% 55% at 50% -5%,  rgba(0,255,102,0.08) 0%, transparent 65%),
+                radial-gradient(ellipse 50% 40% at 90% 90%,  rgba(0,255,102,0.05) 0%, transparent 55%),
+                radial-gradient(ellipse 40% 30% at 10% 70%,  rgba(0,200,80,0.03)  0%, transparent 50%);
         }
 
-        /* Scanline texture overlay */
+        /* Subtle grid pattern */
         body::after {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image: repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 2px,
-                rgba(0,0,0,0.03) 2px,
-                rgba(0,0,0,0.03) 4px
-            );
-            pointer-events: none;
-            z-index: 0;
+            content:'';
+            position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.4;
+            background-image:
+                linear-gradient(rgba(0,255,102,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,102,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
         }
 
-        /* ─── UTILITY ─────────────────────────────────── */
+        /* ══════════════════════════════════════════
+           UTILITIES
+        ══════════════════════════════════════════ */
+        .z1 { position: relative; z-index: 1; }
+
         .container {
-            width: min(1100px, 92%);
+            width: min(1120px, 92%);
             margin-inline: auto;
         }
-
-        .neon { color: var(--neon); }
 
         .tag {
             display: inline-block;
             font-family: 'Fira Code', monospace;
-            font-size: 0.72rem;
+            font-size: .7rem;
             color: var(--neon);
             background: var(--neon-dim);
-            border: 1px solid rgba(0,255,102,0.25);
-            padding: 3px 12px;
+            border: 1px solid var(--neon-mid);
+            padding: 4px 14px;
             border-radius: 50px;
-            letter-spacing: 0.08em;
+            letter-spacing: .1em;
             text-transform: uppercase;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
 
-        /* ─── HEADER ─────────────────────────────────── */
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            padding: 14px 0;
-            border-bottom: 1px solid rgba(0,255,102,0.1);
-            backdrop-filter: blur(18px) saturate(150%);
-            background: rgba(7,10,14,0.75);
-        }
-
-        header .container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-        }
-
-        .logo-wrap {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            text-decoration: none;
-        }
-
-        .logo-wrap img {
-            height: 48px;
-            width: 48px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid rgba(0,255,102,0.4);
-            filter: drop-shadow(0 0 8px rgba(0,255,102,0.4));
-            transition: filter 0.3s;
-        }
-
-        .logo-wrap:hover img {
-            filter: drop-shadow(0 0 16px rgba(0,255,102,0.8));
-        }
-
-        .logo-text {
-            font-family: 'Fira Code', monospace;
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: #fff;
-            letter-spacing: 0.04em;
-        }
-
-        .logo-text span { color: var(--neon); }
-
-        nav {
-            display: flex;
-            gap: 28px;
-        }
-
-        nav a {
-            font-family: 'Fira Code', monospace;
-            font-size: 0.8rem;
-            color: var(--muted);
-            text-decoration: none;
-            letter-spacing: 0.05em;
-            transition: color 0.25s;
-        }
-
-        nav a:hover { color: var(--neon); }
-
-        /* ─── HERO ───────────────────────────────────── */
-        .hero {
-            position: relative;
-            z-index: 1;
-            padding: 100px 0 70px;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: clamp(3rem, 8vw, 6rem);
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
             font-weight: 800;
             color: #fff;
-            line-height: 1.05;
-            letter-spacing: -0.02em;
-            margin-bottom: 20px;
+            margin-bottom: 48px;
         }
 
-        .hero h1 .neon {
-            text-shadow:
-                0 0 20px rgba(0,255,102,0.6),
-                0 0 60px rgba(0,255,102,0.2);
+        .divider {
+            height:1px;
+            background: linear-gradient(90deg, transparent, rgba(0,255,102,0.18), transparent);
+            width:80%; margin:0 auto;
         }
 
-        .hero p {
-            font-size: 1.1rem;
-            color: var(--muted);
-            max-width: 540px;
-            margin: 0 auto 36px;
-            font-weight: 300;
-        }
-
-        /* ─── BUTTONS ────────────────────────────────── */
+        /* ══════════════════════════════════════════
+           BUTTONS
+        ══════════════════════════════════════════ */
         .btn {
             display: inline-flex;
             align-items: center;
             gap: 8px;
             padding: 13px 28px;
             font-family: 'Fira Code', monospace;
-            font-size: 0.82rem;
+            font-size: .82rem;
             font-weight: 700;
-            letter-spacing: 0.08em;
+            letter-spacing: .07em;
             text-transform: uppercase;
             text-decoration: none;
             color: var(--neon);
             background: transparent;
             border: 1.5px solid var(--neon);
-            border-radius: var(--radius);
+            border-radius: var(--r);
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: all .25s ease;
             white-space: nowrap;
         }
-
         .btn:hover {
             background: var(--neon);
             color: var(--bg);
-            box-shadow: 0 0 28px var(--neon-glow), 0 0 60px rgba(0,255,102,0.15);
+            box-shadow: 0 0 30px var(--neon-glow), 0 0 60px rgba(0,255,102,.12);
             transform: translateY(-2px);
         }
-
         .btn:active { transform: translateY(0); }
 
-        .btn-solid {
-            background: var(--neon);
-            color: var(--bg);
+        .btn-solid { background: var(--neon); color: var(--bg); }
+        .btn-solid:hover { background: transparent; color: var(--neon); }
+
+        /* ══════════════════════════════════════════
+           HEADER
+        ══════════════════════════════════════════ */
+        header {
+            position: sticky; top:0; z-index:200;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(0,255,102,0.1);
+            backdrop-filter: blur(20px) saturate(160%);
+            -webkit-backdrop-filter: blur(20px) saturate(160%);
+            background: rgba(6,9,16,0.80);
+        }
+        header .container {
+            display:flex; align-items:center; justify-content:space-between; gap:16px;
+        }
+        .logo-wrap { display:flex; align-items:center; gap:12px; text-decoration:none; }
+        .logo-wrap img {
+            height:46px; width:46px; border-radius:50%; object-fit:cover;
+            border: 2px solid rgba(0,255,102,0.45);
+            filter: drop-shadow(0 0 8px rgba(0,255,102,0.4));
+            transition: filter .3s, transform .3s;
+        }
+        .logo-wrap:hover img {
+            filter: drop-shadow(0 0 18px rgba(0,255,102,.85));
+            transform: rotate(5deg) scale(1.05);
+        }
+        .logo-text {
+            font-family: 'Fira Code', monospace;
+            font-weight:700; font-size:1.1rem; color:#fff; letter-spacing:.05em;
+        }
+        .logo-text em { color: var(--neon); font-style:normal; }
+
+        nav { display:flex; gap:28px; }
+        nav a {
+            font-family:'Fira Code',monospace; font-size:.78rem;
+            color:var(--muted); text-decoration:none; letter-spacing:.05em;
+            transition:color .25s;
+        }
+        nav a:hover { color:var(--neon); }
+
+        /* ══════════════════════════════════════════
+           HERO
+        ══════════════════════════════════════════ */
+        .hero {
+            padding: 100px 0 80px;
+            text-align: center;
+            position:relative; z-index:1;
         }
 
-        .btn-solid:hover {
-            background: transparent;
+        /* Glowing ring behind title */
+        .hero-glow {
+            position:absolute; top:60px; left:50%;
+            transform:translateX(-50%);
+            width:600px; height:300px;
+            background: radial-gradient(ellipse, rgba(0,255,102,0.07) 0%, transparent 70%);
+            pointer-events:none; z-index:0;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 9vw, 6.5rem);
+            font-weight:800; color:#fff;
+            line-height:1.02; letter-spacing:-.03em;
+            margin-bottom:20px; position:relative; z-index:1;
+        }
+        .hero h1 .neon {
             color: var(--neon);
+            text-shadow:
+                0 0 20px rgba(0,255,102,.7),
+                0 0 60px rgba(0,255,102,.25),
+                0 0 120px rgba(0,255,102,.1);
+        }
+        .hero p {
+            font-size:1.1rem; color:var(--muted); font-weight:300;
+            max-width:520px; margin:0 auto 36px;
+            position:relative; z-index:1;
         }
 
-        /* ─── HERO BANNER ────────────────────────────── */
+        /* Stats strip */
+        .hero-stats {
+            display:flex; justify-content:center; gap:48px;
+            margin: 52px auto 0; max-width:480px;
+            flex-wrap: wrap;
+        }
+        .stat-item { text-align:center; }
+        .stat-num {
+            font-family:'Fira Code',monospace; font-size:2rem; font-weight:700;
+            color:#fff; line-height:1;
+            text-shadow: 0 0 20px rgba(0,255,102,.4);
+        }
+        .stat-num span { color:var(--neon); }
+        .stat-label {
+            font-size:.7rem; letter-spacing:.1em; text-transform:uppercase;
+            color:var(--muted); margin-top:4px;
+        }
+
+        /* Banner */
         .hero-banner {
-            margin-top: 60px;
-            position: relative;
-            display: inline-block;
+            margin-top:64px; position:relative; display:inline-block;
         }
-
         .hero-banner::before {
-            content: '';
-            position: absolute;
-            inset: -1px;
-            border-radius: 18px;
-            background: linear-gradient(135deg, rgba(0,255,102,0.5), transparent 50%, rgba(0,255,102,0.2));
-            z-index: -1;
-            filter: blur(1px);
+            content:'';
+            position:absolute; inset:-2px; border-radius:20px; z-index:-1;
+            background: linear-gradient(135deg, rgba(0,255,102,.5), transparent 50%, rgba(0,255,102,.2));
+            filter:blur(2px);
         }
-
+        .hero-banner::after {
+            content:'';
+            position:absolute; bottom:-30px; left:10%; right:10%; height:50px; z-index:-2;
+            background: radial-gradient(ellipse, rgba(0,255,102,.2) 0%, transparent 70%);
+            filter:blur(10px);
+        }
         .hero-banner img {
-            display: block;
-            width: min(520px, 90vw);
-            border-radius: 16px;
-            border: 1px solid rgba(0,255,102,0.25);
-            box-shadow:
-                0 20px 60px rgba(0,0,0,0.6),
-                0 0 40px rgba(0,255,102,0.1);
+            display:block;
+            width:min(520px, 90vw);
+            border-radius:18px;
+            border:1px solid rgba(0,255,102,.25);
+            box-shadow: 0 24px 70px rgba(0,0,0,.7), 0 0 50px rgba(0,255,102,.08);
         }
 
-        /* ─── SECTION COMMON ─────────────────────────── */
-        section {
-            position: relative;
-            z-index: 1;
-        }
-
-        .section-label {
-            text-align: center;
-            margin-bottom: 12px;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: clamp(1.8rem, 4vw, 2.6rem);
-            font-weight: 800;
-            color: #fff;
-            margin-bottom: 50px;
-        }
-
-        /* ─── SERVICES ───────────────────────────────── */
-        .services-section {
-            padding: 90px 0;
-        }
-
+        /* ══════════════════════════════════════════
+           SERVICES
+        ══════════════════════════════════════════ */
+        .services-section { padding:90px 0; text-align:center; }
         .services-grid {
-            display: grid;
+            display:grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
+            gap:24px; margin-top:0;
         }
-
         .card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: var(--radius);
-            padding: 40px 32px;
-            text-align: center;
-            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            background:var(--card);
+            border:1px solid var(--card-border);
+            border-radius:var(--r);
+            padding:44px 32px;
+            text-align:center;
+            transition:transform .3s, border-color .3s, box-shadow .3s;
+            position:relative; overflow:hidden;
         }
-
-        .card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(0,255,102,0.45);
-            box-shadow: 0 16px 40px rgba(0,255,102,0.08), 0 0 0 1px rgba(0,255,102,0.1);
+        /* Glowing corner on hover */
+        .card::before {
+            content:'';
+            position:absolute; top:0; left:0;
+            width:100%; height:3px;
+            background:linear-gradient(90deg, transparent, var(--neon), transparent);
+            opacity:0; transition:opacity .3s;
         }
+        .card:hover { transform:translateY(-10px); border-color:rgba(0,255,102,.4); }
+        .card:hover::before { opacity:1; }
+        .card:hover { box-shadow: 0 20px 50px rgba(0,255,102,.07), 0 0 0 1px rgba(0,255,102,.1); }
 
         .card-icon {
-            font-family: 'Fira Code', monospace;
-            font-size: 2rem;
-            color: var(--neon);
-            margin-bottom: 20px;
-            display: block;
-            text-shadow: 0 0 20px rgba(0,255,102,0.4);
+            font-family:'Fira Code',monospace; font-size:2.2rem;
+            color:var(--neon); margin-bottom:20px; display:block;
+            text-shadow:0 0 20px rgba(0,255,102,.45);
         }
+        .card h3 { font-size:1.1rem; font-weight:600; color:#fff; margin-bottom:12px; }
+        .card p  { color:var(--muted); font-size:.92rem; line-height:1.7; }
 
-        .card h3 {
-            font-size: 1.15rem;
-            font-weight: 600;
-            color: #fff;
-            margin-bottom: 12px;
-        }
-
-        .card p {
-            color: var(--muted);
-            font-size: 0.93rem;
-            line-height: 1.7;
-        }
-
-        /* ─── DIVIDER ─────────────────────────────────── */
-        .divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(0,255,102,0.2), transparent);
-            margin: 0 auto;
-            width: 80%;
-        }
-
-        /* ─── PORTFOLIO ──────────────────────────────── */
-        .portfolio-section {
-            padding: 90px 0;
-        }
-
+        /* ══════════════════════════════════════════
+           PORTFOLIO
+        ══════════════════════════════════════════ */
+        .portfolio-section { padding:90px 0; text-align:center; }
         .project-card {
-            background: var(--card-bg);
-            border: 1.5px solid var(--neon);
-            border-radius: 18px;
-            padding: 56px 40px;
-            max-width: 620px;
-            margin: 0 auto;
-            text-align: center;
-            box-shadow: 0 0 40px rgba(0,255,102,0.08), inset 0 0 60px rgba(0,255,102,0.02);
-            transition: transform 0.3s, box-shadow 0.3s;
+            background:var(--card);
+            border:1.5px solid var(--neon);
+            border-radius:20px;
+            padding:56px 44px;
+            max-width:640px; margin:0 auto;
+            box-shadow: 0 0 50px rgba(0,255,102,.07), inset 0 0 80px rgba(0,255,102,.02);
+            transition: transform .3s, box-shadow .3s;
+            position:relative; overflow:hidden;
         }
-
+        .project-card::before {
+            content:'';
+            position:absolute; inset:0;
+            background:radial-gradient(ellipse 70% 50% at 50% 0%, rgba(0,255,102,.04) 0%, transparent 70%);
+        }
         .project-card:hover {
             transform: scale(1.02);
-            box-shadow: 0 0 60px rgba(0,255,102,0.18), inset 0 0 60px rgba(0,255,102,0.04);
+            box-shadow: 0 0 70px rgba(0,255,102,.15), inset 0 0 80px rgba(0,255,102,.04);
         }
-
         .project-card .eyebrow {
-            font-family: 'Fira Code', monospace;
-            font-size: 0.75rem;
-            color: var(--muted);
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            margin-bottom: 12px;
+            font-family:'Fira Code',monospace; font-size:.72rem;
+            color:var(--muted); letter-spacing:.12em; text-transform:uppercase;
+            margin-bottom:12px;
         }
-
         .project-card h3 {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: #fff;
-            letter-spacing: -0.02em;
-            margin-bottom: 28px;
+            font-size:2.4rem; font-weight:800; color:#fff;
+            letter-spacing:-.02em; margin-bottom:30px;
         }
 
-        /* ─── PWA INSTALL ─────────────────────────────── */
+        /* ══════════════════════════════════════════
+           PWA INSTALL SECTION
+        ══════════════════════════════════════════ */
         #seccionApp {
-            display: block;
-            margin: 0 auto 60px;
-            max-width: 600px;
-            padding: 44px 36px;
-            text-align: center;
-            background: linear-gradient(135deg, rgba(0,255,102,0.04), transparent);
-            border: 1px dashed rgba(0,255,102,0.35);
-            border-radius: 18px;
+            display:block;
+            margin:0 auto 64px;
+            max-width:620px;
+            padding:48px 40px;
+            text-align:center;
+            background:linear-gradient(135deg, rgba(0,255,102,.05), rgba(0,255,102,.02));
+            border:1.5px dashed rgba(0,255,102,.35);
+            border-radius:20px;
+            position:relative; overflow:hidden;
         }
-
+        #seccionApp::before {
+            content:'';
+            position:absolute; top:-40px; left:50%; transform:translateX(-50%);
+            width:200px; height:80px;
+            background:radial-gradient(ellipse, rgba(0,255,102,.12) 0%, transparent 70%);
+        }
         #seccionApp h2 {
-            font-size: 1.5rem;
-            color: #fff;
-            margin-bottom: 10px;
+            font-size:1.55rem; color:#fff; margin-bottom:10px; position:relative;
         }
-
         #seccionApp p {
-            color: var(--muted);
-            font-size: 0.95rem;
-            margin-bottom: 24px;
+            color:var(--muted); font-size:.95rem; margin-bottom:26px; position:relative;
         }
 
-        /* ─── ABOUT ──────────────────────────────────── */
+        @keyframes pulse-btn {
+            0%,100% { box-shadow: 0 0 0 0 rgba(0,255,102,0); }
+            50%      { box-shadow: 0 0 0 8px rgba(0,255,102,.12), 0 0 30px rgba(0,255,102,.2); }
+        }
+        #btnInstalar { animation: pulse-btn 2.8s ease infinite; }
+
+        /* ══════════════════════════════════════════
+           CUSTOM MODAL (replaces ugly alert)
+        ══════════════════════════════════════════ */
+        .modal-overlay {
+            display:none;
+            position:fixed; inset:0; z-index:9000;
+            background:rgba(0,0,0,.75);
+            backdrop-filter:blur(8px);
+            -webkit-backdrop-filter:blur(8px);
+            align-items:center; justify-content:center;
+            padding:20px;
+        }
+        .modal-overlay.active { display:flex; }
+
+        .modal {
+            background:var(--card);
+            border:1px solid rgba(0,255,102,.3);
+            border-radius:22px;
+            padding:40px 36px;
+            max-width:480px; width:100%;
+            text-align:center;
+            box-shadow:
+                0 0 80px rgba(0,255,102,.12),
+                0 40px 80px rgba(0,0,0,.6);
+            position:relative; overflow:hidden;
+            animation: modalIn .3s cubic-bezier(.34,1.56,.64,1) both;
+        }
+
+        @keyframes modalIn {
+            from { opacity:0; transform:scale(.85) translateY(20px); }
+            to   { opacity:1; transform:scale(1) translateY(0); }
+        }
+
+        .modal::before {
+            content:'';
+            position:absolute; top:0; left:0; right:0; height:2px;
+            background:linear-gradient(90deg, transparent, var(--neon), transparent);
+        }
+
+        .modal-icon {
+            font-size:3rem; margin-bottom:16px; display:block;
+            filter:drop-shadow(0 0 12px rgba(0,255,102,.5));
+        }
+        .modal h3 {
+            font-size:1.35rem; font-weight:800; color:#fff; margin-bottom:8px;
+        }
+        .modal .modal-sub {
+            color:var(--muted); font-size:.88rem; margin-bottom:28px; line-height:1.6;
+        }
+
+        .modal-steps {
+            list-style:none;
+            margin-bottom:30px;
+            display:flex; flex-direction:column; gap:12px;
+            text-align:left;
+        }
+        .modal-steps li {
+            display:flex; align-items:flex-start; gap:12px;
+            background:rgba(0,255,102,.05);
+            border:1px solid rgba(0,255,102,.12);
+            border-radius:10px;
+            padding:12px 16px;
+            font-size:.85rem; color:var(--text); line-height:1.5;
+        }
+        .modal-steps .step-icon {
+            font-size:1.1rem; flex-shrink:0; margin-top:1px;
+        }
+        .modal-steps strong {
+            display:block; color:var(--neon);
+            font-family:'Fira Code',monospace; font-size:.75rem;
+            letter-spacing:.05em; margin-bottom:2px;
+        }
+
+        .modal-close {
+            width:100%; padding:13px;
+            font-family:'Fira Code',monospace; font-size:.82rem;
+            font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+            color:var(--bg); background:var(--neon);
+            border:none; border-radius:var(--r); cursor:pointer;
+            transition:all .25s;
+        }
+        .modal-close:hover {
+            background:#00cc55;
+            box-shadow:0 0 24px rgba(0,255,102,.5);
+        }
+
+        /* ══════════════════════════════════════════
+           ABOUT
+        ══════════════════════════════════════════ */
         .about-section {
-            padding: 90px 0;
-            background: var(--card-bg);
-            border-top: 1px solid rgba(0,255,102,0.15);
-            border-bottom: 1px solid rgba(0,255,102,0.15);
+            padding:90px 0;
+            background:var(--bg2);
+            border-top:1px solid rgba(0,255,102,.12);
+            border-bottom:1px solid rgba(0,255,102,.12);
         }
-
-        .about-inner {
-            max-width: 780px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
+        .about-inner { max-width:780px; margin:0 auto; text-align:center; }
         .founders {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 32px;
+            display:flex; gap:16px; justify-content:center;
+            flex-wrap:wrap; margin-bottom:30px;
         }
-
         .founder-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(0,255,102,0.07);
-            border: 1px solid rgba(0,255,102,0.2);
-            border-radius: 50px;
-            padding: 8px 20px;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.82rem;
-            color: var(--neon);
+            display:inline-flex; align-items:center; gap:8px;
+            background:rgba(0,255,102,.07);
+            border:1px solid rgba(0,255,102,.2);
+            border-radius:50px; padding:9px 22px;
+            font-family:'Fira Code',monospace; font-size:.82rem; color:var(--neon);
+            transition:background .3s, border-color .3s;
         }
-
-        .about-section p {
-            color: var(--muted);
-            font-size: 1.05rem;
-            line-height: 1.85;
+        .founder-chip:hover {
+            background:rgba(0,255,102,.13);
+            border-color:rgba(0,255,102,.45);
         }
+        .about-section p { color:var(--muted); font-size:1.05rem; line-height:1.9; }
 
-        /* ─── INSTAGRAM ──────────────────────────────── */
-        .ig-section {
-            padding: 80px 0;
-            text-align: center;
-        }
-
+        /* ══════════════════════════════════════════
+           INSTAGRAM
+        ══════════════════════════════════════════ */
+        .ig-section { padding:80px 0; text-align:center; }
         .ig-label {
-            font-family: 'Fira Code', monospace;
-            font-size: 0.72rem;
-            color: var(--muted);
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            margin-bottom: 18px;
+            font-family:'Fira Code',monospace; font-size:.7rem;
+            color:var(--muted); letter-spacing:.15em; text-transform:uppercase;
+            margin-bottom:18px;
         }
-
         .ig-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 14px;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #fff;
-            text-decoration: none;
-            transition: color 0.25s, text-shadow 0.25s;
+            display:inline-flex; align-items:center; gap:14px;
+            font-size:1.9rem; font-weight:800; color:#fff;
+            text-decoration:none; transition:color .25s, text-shadow .25s;
         }
-
         .ig-link:hover {
-            color: var(--neon);
-            text-shadow: 0 0 20px rgba(0,255,102,0.5);
+            color:var(--neon);
+            text-shadow: 0 0 24px rgba(0,255,102,.5);
         }
 
-        /* ─── FOOTER ─────────────────────────────────── */
+        /* ══════════════════════════════════════════
+           FOOTER
+        ══════════════════════════════════════════ */
         footer {
-            border-top: 1px solid rgba(0,255,102,0.1);
-            padding: 28px 0;
-            text-align: center;
+            border-top:1px solid rgba(0,255,102,.1);
+            padding:28px 0; text-align:center;
         }
-
         footer p {
-            font-size: 0.82rem;
-            color: var(--muted);
-            font-family: 'Fira Code', monospace;
+            font-size:.78rem; color:var(--muted);
+            font-family:'Fira Code',monospace; letter-spacing:.04em;
         }
 
-        /* ─── ANIMATIONS ─────────────────────────────── */
+        /* ══════════════════════════════════════════
+           ANIMATIONS
+        ══════════════════════════════════════════ */
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(24px); }
-            to   { opacity: 1; transform: translateY(0); }
+            from { opacity:0; transform:translateY(28px); }
+            to   { opacity:1; transform:translateY(0); }
         }
+        .hero h1    { animation: fadeUp .7s ease both; }
+        .hero p     { animation: fadeUp .7s .15s ease both; }
+        .hero .btn  { animation: fadeUp .7s .25s ease both; }
+        .hero-stats { animation: fadeUp .7s .35s ease both; }
+        .hero-banner { animation: fadeUp .9s .45s ease both; }
 
-        .hero h1    { animation: fadeUp 0.7s ease both; }
-        .hero p     { animation: fadeUp 0.7s 0.15s ease both; }
-        .hero .btn  { animation: fadeUp 0.7s 0.25s ease both; }
-        .hero-banner { animation: fadeUp 0.9s 0.35s ease both; }
+        /* Scroll reveal via class toggle */
+        .reveal { opacity:0; transform:translateY(30px); transition:opacity .6s ease, transform .6s ease; }
+        .reveal.visible { opacity:1; transform:translateY(0); }
 
-        @keyframes pulse-border {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(0,255,102,0); }
-            50%       { box-shadow: 0 0 0 6px rgba(0,255,102,0.12); }
-        }
-
-        #btnInstalar { animation: pulse-border 2.5s infinite; }
-
-        /* ─── RESPONSIVE ─────────────────────────────── */
-        @media (max-width: 768px) {
-            nav { display: none; }
-            .hero { padding: 70px 0 50px; }
-            .project-card { padding: 40px 24px; }
-            #seccionApp { margin-inline: 16px; }
-            .ig-link { font-size: 1.3rem; }
+        /* ══════════════════════════════════════════
+           RESPONSIVE
+        ══════════════════════════════════════════ */
+        @media (max-width:768px) {
+            nav { display:none; }
+            .hero { padding:70px 0 50px; }
+            .hero-stats { gap:28px; }
+            .project-card { padding:40px 24px; }
+            #seccionApp { margin-inline:0; }
+            .modal { padding:32px 24px; }
+            .ig-link { font-size:1.4rem; }
         }
     </style>
 </head>
@@ -512,12 +540,12 @@
 
 <!-- ══════════════════════════════════════════
      HEADER
-═══════════════════════════════════════════ -->
+══════════════════════════════════════════ -->
 <header>
     <div class="container">
         <a href="#" class="logo-wrap">
             <img src="assets/imagen1.png" alt="Logo Dev Web">
-            <span class="logo-text">DEV<span>.</span>WEB</span>
+            <span class="logo-text">DEV<em>.</em>WEB</span>
         </a>
         <nav>
             <a href="#servicios">Servicios</a>
@@ -530,15 +558,32 @@
 
 <!-- ══════════════════════════════════════════
      HERO
-═══════════════════════════════════════════ -->
-<section class="hero">
+══════════════════════════════════════════ -->
+<section class="hero z1">
+    <div class="hero-glow"></div>
     <div class="container">
-        <div class="tag">Concepción, Chile</div>
+        <div class="tag">// Concepción, Chile</div>
         <h1>SOMOS<br><span class="neon">DEV WEB</span></h1>
         <p>Especialistas en Desarrollo Web &amp; Software. Transformamos ideas en soluciones digitales eficientes y de alto impacto.</p>
         <a href="https://www.instagram.com/deb_web_ccp/?hl=es" target="_blank" rel="noopener" class="btn btn-solid">
             📸 Contáctanos en Instagram
         </a>
+
+        <div class="hero-stats">
+            <div class="stat-item">
+                <div class="stat-num">2<span>+</span></div>
+                <div class="stat-label">Años de experiencia</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">5<span>+</span></div>
+                <div class="stat-label">Proyectos completados</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">100<span>%</span></div>
+                <div class="stat-label">Clientes satisfechos</div>
+            </div>
+        </div>
+
         <div class="hero-banner">
             <img src="assets/imagen2.png" alt="Servicios y Tecnologías Dev Web">
         </div>
@@ -547,23 +592,23 @@
 
 <!-- ══════════════════════════════════════════
      SERVICES
-═══════════════════════════════════════════ -->
-<section class="services-section" id="servicios">
+══════════════════════════════════════════ -->
+<section class="services-section z1" id="servicios">
     <div class="container">
-        <div class="section-label"><span class="tag">// Nuestros Servicios</span></div>
-        <h2 class="section-title">¿Qué Hacemos?</h2>
+        <div class="tag reveal">// Nuestros Servicios</div>
+        <h2 class="section-title reveal">¿Qué Hacemos?</h2>
         <div class="services-grid">
-            <div class="card">
+            <div class="card reveal">
                 <span class="card-icon">&lt;/&gt;</span>
                 <h3>Desarrollo a Medida</h3>
                 <p>Construimos sitios web rápidos, seguros y completamente adaptados a las necesidades de su organización.</p>
             </div>
-            <div class="card">
+            <div class="card reveal" style="transition-delay:.1s">
                 <span class="card-icon">{ }</span>
                 <h3>Diseño Responsivo</h3>
                 <p>Interfaces atractivas y funcionales que ofrecen la mejor experiencia en computadoras, tablets y celulares.</p>
             </div>
-            <div class="card">
+            <div class="card reveal" style="transition-delay:.2s">
                 <span class="card-icon">SEO</span>
                 <h3>Optimización Digital</h3>
                 <p>Mejoramos la velocidad de carga y aplicamos buenas prácticas para potenciar su presencia digital.</p>
@@ -576,12 +621,12 @@
 
 <!-- ══════════════════════════════════════════
      PORTFOLIO
-═══════════════════════════════════════════ -->
-<section class="portfolio-section" id="portafolio">
+══════════════════════════════════════════ -->
+<section class="portfolio-section z1" id="portafolio">
     <div class="container">
-        <div class="section-label"><span class="tag">Portafolio</span></div>
-        <h2 class="section-title">Nuestro Trabajo</h2>
-        <div class="project-card">
+        <div class="tag reveal">// Portafolio</div>
+        <h2 class="section-title reveal">Nuestro Trabajo</h2>
+        <div class="project-card reveal">
             <p class="eyebrow">Último proyecto desarrollado</p>
             <h3>Donato Studio</h3>
             <a href="https://donatostudio.vercel.app/" target="_blank" rel="noopener" class="btn">
@@ -593,8 +638,8 @@
 
 <!-- ══════════════════════════════════════════
      PWA INSTALL
-═══════════════════════════════════════════ -->
-<div class="container">
+══════════════════════════════════════════ -->
+<div class="container z1">
     <section id="seccionApp">
         <h2>📱 Lleva a Dev Web contigo</h2>
         <p>Instala nuestra app directamente en tu dispositivo para acceso rápido sin abrir el navegador.</p>
@@ -602,21 +647,21 @@
     </section>
 </div>
 
-<div class="divider"></div>
+<div class="divider" style="margin-bottom:0"></div>
 
 <!-- ══════════════════════════════════════════
      ABOUT
-═══════════════════════════════════════════ -->
-<section class="about-section" id="nosotros">
+══════════════════════════════════════════ -->
+<section class="about-section z1" id="nosotros">
     <div class="container">
         <div class="about-inner">
-            <div class="section-label"><span class="tag">Quiénes Somos</span></div>
-            <h2 class="section-title">El Equipo</h2>
-            <div class="founders">
+            <div class="tag reveal">// Quiénes Somos</div>
+            <h2 class="section-title reveal">El Equipo</h2>
+            <div class="founders reveal">
                 <span class="founder-chip">👨‍💻 Martín Bustamante</span>
                 <span class="founder-chip">👨‍💻 Felipe Zúñiga</span>
             </div>
-            <p>
+            <p class="reveal">
                 Hola, mucho gusto. Somos Martín y Felipe, estudiantes de Ingeniería Civil Informática (3er y 4to año) en la ciudad de Concepción. Nos dedicamos al desarrollo de páginas web y nos gustaría ofrecer nuestros servicios para apoyar a su organización en su presencia digital.<br><br>
                 Si tienen algún proyecto en mente o necesitan implementar un sitio web, no duden en contactarnos. Estaremos encantados de conversar sobre cómo podemos ayudarles. ¡Saludos!
             </p>
@@ -626,8 +671,8 @@
 
 <!-- ══════════════════════════════════════════
      INSTAGRAM
-═══════════════════════════════════════════ -->
-<section class="ig-section">
+══════════════════════════════════════════ -->
+<section class="ig-section z1">
     <div class="container">
         <p class="ig-label">Nuestra Presencia Digital</p>
         <a href="https://www.instagram.com/deb_web_ccp/?hl=es" target="_blank" rel="noopener" class="ig-link">
@@ -638,69 +683,101 @@
 
 <!-- ══════════════════════════════════════════
      FOOTER
-═══════════════════════════════════════════ -->
-<footer>
+══════════════════════════════════════════ -->
+<footer class="z1">
     <div class="container">
         <p>&copy; 2026 Dev Web — Concepción, Chile. Todos los derechos reservados.</p>
     </div>
 </footer>
 
 <!-- ══════════════════════════════════════════
+     MODAL (reemplaza el feo alert del navegador)
+══════════════════════════════════════════ -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+        <span class="modal-icon">📱</span>
+        <h3>Instala nuestra App</h3>
+        <p class="modal-sub">Tu navegador no soporta la instalación automática, pero puedes agregarla fácilmente de forma manual:</p>
+        <ul class="modal-steps">
+            <li>
+                <span class="step-icon">🍎</span>
+                <div><strong>iOS — Safari</strong>Toca el botón compartir <strong style="color:#fff;font-family:inherit;font-size:.85rem">□↑</strong> en la barra de Safari y luego "Añadir a pantalla de inicio".</div>
+            </li>
+            <li>
+                <span class="step-icon">🤖</span>
+                <div><strong>Android — Chrome</strong>Toca el menú <strong style="color:#fff;font-family:inherit;font-size:.85rem">⋮</strong> en la esquina superior y selecciona "Añadir a pantalla de inicio".</div>
+            </li>
+            <li>
+                <span class="step-icon">💻</span>
+                <div><strong>Escritorio — Chrome / Edge</strong>Busca el ícono <strong style="color:#fff;font-family:inherit;font-size:.85rem">⊕</strong> al final de la barra de direcciones y haz clic en él.</div>
+            </li>
+        </ul>
+        <button class="modal-close" id="modalClose">✓ Entendido</button>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════
      SCRIPTS
-═══════════════════════════════════════════ -->
+══════════════════════════════════════════ -->
 <script>
-    // ── 1. Service Worker Registration ──────────────
+    /* ── Service Worker ─────────────────── */
     if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register("sw.js")
-            .then(() => console.log("[PWA] Service Worker registrado."))
-            .catch(err => console.warn("[PWA] Error al registrar SW:", err));
+            .then(() => console.log("[PWA] SW registrado."))
+            .catch(err => console.warn("[PWA] Error SW:", err));
     }
 
-    // ── 2. PWA Install Logic ─────────────────────────
+    /* ── PWA Install ────────────────────── */
     let deferredPrompt = null;
     const btnInstalar  = document.getElementById("btnInstalar");
     const seccionApp   = document.getElementById("seccionApp");
+    const modalOverlay = document.getElementById("modalOverlay");
+    const modalClose   = document.getElementById("modalClose");
 
-    // Capture the native install event (Chrome / Edge / Android)
     window.addEventListener("beforeinstallprompt", (e) => {
         e.preventDefault();
         deferredPrompt = e;
-        // Highlight the section with a subtle animation
         seccionApp.style.borderColor = "var(--neon)";
     });
 
     btnInstalar.addEventListener("click", async () => {
         if (deferredPrompt) {
-            // Show the native install dialog
             deferredPrompt.prompt();
             const { outcome } = await deferredPrompt.userChoice;
-
             if (outcome === "accepted") {
-                console.log("[PWA] El usuario instaló la aplicación.");
                 seccionApp.style.display = "none";
-            } else {
-                console.log("[PWA] El usuario declinó la instalación.");
             }
-
             deferredPrompt = null;
         } else {
-            // iOS / Samsung Browser / already installed — manual instructions
-            alert(
-                "📱 Tu navegador no permite la instalación automática.\n\n" +
-                "Para instalar la app de forma manual:\n\n" +
-                "▸ iOS Safari: Toca el botón compartir (□↑) y luego 'Añadir a pantalla de inicio'.\n" +
-                "▸ Android Chrome: Toca el menú (⋮) y selecciona 'Añadir a pantalla de inicio'.\n" +
-                "▸ Escritorio Chrome/Edge: Busca el ícono ⊕ en la barra de direcciones.\n\n" +
-                "¡Gracias por querer tener Dev Web siempre a mano!"
-            );
+            // Mostrar el modal custom en lugar del feo alert nativo
+            modalOverlay.classList.add("active");
         }
     });
 
-    // ── 3. After install: hide the section ──────────
+    /* Cerrar modal */
+    modalClose.addEventListener("click", () => modalOverlay.classList.remove("active"));
+    modalOverlay.addEventListener("click", (e) => {
+        if (e.target === modalOverlay) modalOverlay.classList.remove("active");
+    });
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") modalOverlay.classList.remove("active");
+    });
+
     window.addEventListener("appinstalled", () => {
         seccionApp.style.display = "none";
-        console.log("[PWA] App instalada con éxito.");
     });
+
+    /* ── Scroll Reveal ──────────────────── */
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
 </script>
 
 </body>
