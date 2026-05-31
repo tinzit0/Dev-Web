@@ -317,6 +317,78 @@
             transform: scale(1.02);
             box-shadow: 0 0 70px rgba(0,255,102,.15), inset 0 0 80px rgba(0,255,102,.04);
         }
+        /* Título del proyecto clickeable */
+        .project-title-link {
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        .project-title-link h3 {
+            font-size:2.4rem; font-weight:800; color:#fff;
+            letter-spacing:-.02em;
+            transition: color .25s, text-shadow .25s;
+        }
+        .project-title-link:hover h3 {
+            color: var(--neon);
+            text-shadow: 0 0 24px rgba(0,255,102,.55);
+        }
+        .project-title-link::after {
+            content: ' ↗';
+            font-size: 1.4rem;
+            color: var(--neon);
+            opacity: 0;
+            transition: opacity .25s, transform .25s;
+            display: inline-block;
+            transform: translate(-4px, -4px);
+        }
+        .project-title-link:hover::after {
+            opacity: 1;
+            transform: translate(0, -8px);
+        }
+
+        /* ══════════════════════════════════════════
+           INSTALL CONFIRM MODAL
+        ══════════════════════════════════════════ */
+        .modal-confirm-body {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+        .modal-confirm-feature {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: rgba(0,255,102,.05);
+            border: 1px solid rgba(0,255,102,.12);
+            border-radius: 10px;
+            padding: 12px 16px;
+            text-align: left;
+            font-size: .88rem;
+            color: var(--text);
+        }
+        .modal-confirm-feature span:first-child {
+            font-size: 1.3rem; flex-shrink: 0;
+        }
+        .modal-btn-row {
+            display: flex;
+            gap: 12px;
+        }
+        .modal-btn-row .btn { flex: 1; justify-content: center; }
+        .btn-cancel {
+            background: transparent;
+            color: var(--muted);
+            border-color: rgba(255,255,255,.15);
+        }
+        .btn-cancel:hover {
+            background: rgba(255,255,255,.07);
+            color: var(--text);
+            border-color: rgba(255,255,255,.3);
+            box-shadow: none;
+            transform: translateY(-2px);
+        }
+
         .project-card .eyebrow {
             font-family:'Fira Code',monospace; font-size:.72rem;
             color:var(--muted); letter-spacing:.12em; text-transform:uppercase;
@@ -628,7 +700,9 @@
         <h2 class="section-title reveal">Nuestro Trabajo</h2>
         <div class="project-card reveal">
             <p class="eyebrow">Último proyecto desarrollado</p>
-            <h3>Donato Studio</h3>
+            <a href="https://donatostudio.vercel.app/" target="_blank" rel="noopener" class="project-title-link">
+                <h3>Donato Studio</h3>
+            </a>
             <a href="https://donatostudio.vercel.app/" target="_blank" rel="noopener" class="btn">
                 🔗 Visitar Proyecto Web
             </a>
@@ -691,6 +765,32 @@
 </footer>
 
 <!-- ══════════════════════════════════════════
+     MODAL CONFIRMACIÓN INSTALACIÓN
+══════════════════════════════════════════ -->
+<div class="modal-overlay" id="modalConfirm">
+    <div class="modal">
+        <span class="modal-icon">🚀</span>
+        <h3>¿Instalar Dev Web?</h3>
+        <p class="modal-sub">Agrega la app a tu dispositivo y tendrás acceso instantáneo, sin abrir el navegador.</p>
+        <div class="modal-confirm-body">
+            <div class="modal-confirm-feature">
+                <span>⚡</span><span>Carga instantánea desde tu pantalla de inicio</span>
+            </div>
+            <div class="modal-confirm-feature">
+                <span>📶</span><span>Funciona sin conexión a internet</span>
+            </div>
+            <div class="modal-confirm-feature">
+                <span>🎨</span><span>Experiencia de app nativa, sin barras del navegador</span>
+            </div>
+        </div>
+        <div class="modal-btn-row">
+            <button class="btn btn-cancel" id="confirmCancel">✕ Ahora no</button>
+            <button class="btn btn-solid" id="confirmInstall">📲 Instalar ahora</button>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════
      MODAL (reemplaza el feo alert del navegador)
 ══════════════════════════════════════════ -->
 <div class="modal-overlay" id="modalOverlay">
@@ -729,10 +829,13 @@
 
     /* ── PWA Install ────────────────────── */
     let deferredPrompt = null;
-    const btnInstalar  = document.getElementById("btnInstalar");
-    const seccionApp   = document.getElementById("seccionApp");
-    const modalOverlay = document.getElementById("modalOverlay");
-    const modalClose   = document.getElementById("modalClose");
+    const btnInstalar   = document.getElementById("btnInstalar");
+    const seccionApp    = document.getElementById("seccionApp");
+    const modalOverlay  = document.getElementById("modalOverlay");
+    const modalClose    = document.getElementById("modalClose");
+    const modalConfirm  = document.getElementById("modalConfirm");
+    const confirmInstall = document.getElementById("confirmInstall");
+    const confirmCancel  = document.getElementById("confirmCancel");
 
     window.addEventListener("beforeinstallprompt", (e) => {
         e.preventDefault();
@@ -740,27 +843,51 @@
         seccionApp.style.borderColor = "var(--neon)";
     });
 
-    btnInstalar.addEventListener("click", async () => {
+    /* Al hacer clic en "Descargar nuestra app" */
+    btnInstalar.addEventListener("click", () => {
         if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === "accepted") {
-                seccionApp.style.display = "none";
-            }
-            deferredPrompt = null;
+            // Mostrar modal de confirmación propio
+            modalConfirm.classList.add("active");
         } else {
-            // Mostrar el modal custom en lugar del feo alert nativo
+            // No hay prompt nativo (iOS / ya instalada) → instrucciones manuales
             modalOverlay.classList.add("active");
         }
     });
 
-    /* Cerrar modal */
+    /* Usuario confirma instalar */
+    confirmInstall.addEventListener("click", async () => {
+        modalConfirm.classList.remove("active");
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === "accepted") {
+            seccionApp.style.display = "none";
+        }
+        deferredPrompt = null;
+    });
+
+    /* Usuario cancela */
+    confirmCancel.addEventListener("click", () => {
+        modalConfirm.classList.remove("active");
+    });
+
+    /* Cerrar modal de confirmación tocando fuera */
+    modalConfirm.addEventListener("click", (e) => {
+        if (e.target === modalConfirm) modalConfirm.classList.remove("active");
+    });
+
+    /* Cerrar modal de instrucciones manuales */
     modalClose.addEventListener("click", () => modalOverlay.classList.remove("active"));
     modalOverlay.addEventListener("click", (e) => {
         if (e.target === modalOverlay) modalOverlay.classList.remove("active");
     });
+
+    /* Escape cierra cualquier modal abierto */
     document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") modalOverlay.classList.remove("active");
+        if (e.key === "Escape") {
+            modalOverlay.classList.remove("active");
+            modalConfirm.classList.remove("active");
+        }
     });
 
     window.addEventListener("appinstalled", () => {
