@@ -292,59 +292,83 @@
         .card p  { color:var(--muted); font-size:.92rem; line-height:1.7; }
 
         /* ══════════════════════════════════════════
-           PORTFOLIO & ALIEN 4 (APOYADO)
+           PORTFOLIO — ALIEN APOYADO SOBRE LA CARD
         ══════════════════════════════════════════ */
-        .portfolio-section { padding:90px 0; text-align:center; }
-        .project-card {
-            background:var(--card);
-            border:1.5px solid var(--neon);
-            border-radius:20px;
-            padding:56px 44px;
-            max-width:640px; margin:0 auto;
-            box-shadow: 0 0 50px rgba(0,255,102,.07), inset 0 0 80px rgba(0,255,102,.02);
-            transition: transform .3s, box-shadow .3s;
-            position:relative;
-            overflow:visible; /* Visible para que el alien salga de la caja */
+        .portfolio-section { padding: 90px 0; text-align: center; }
+
+        /* Wrapper que da espacio al alien a la izquierda */
+        .portfolio-wrapper {
+            position: relative;
+            display: inline-block;   /* Se ajusta al tamaño de la card */
+            margin-left: 110px;      /* Espacio para el cuerpo del alien */
         }
-        
-        .project-card::after {
-            content:'';
-            position:absolute; inset:0;
-            background:radial-gradient(ellipse 70% 50% at 50% 0%, rgba(0,255,102,.04) 0%, transparent 70%);
+
+        .project-card {
+            background: var(--card);
+            border: 1.5px solid var(--neon);
             border-radius: 20px;
+            padding: 56px 52px 52px;
+            max-width: 620px;
+            box-shadow:
+                0 0 50px rgba(0,255,102,.07),
+                inset 0 0 80px rgba(0,255,102,.02);
+            transition: transform .3s, box-shadow .3s;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(0,255,102,.04) 0%, transparent 70%);
             pointer-events: none;
-            z-index: 0;
         }
 
         .project-card:hover {
             transform: scale(1.02);
             box-shadow: 0 0 70px rgba(0,255,102,.15), inset 0 0 80px rgba(0,255,102,.04);
         }
+
         .project-card .eyebrow {
-            font-family:'Fira Code',monospace; font-size:.72rem;
-            color:var(--muted); letter-spacing:.12em; text-transform:uppercase;
-            margin-bottom:12px;
-        }
-        .project-card h3 {
-            font-size:2.4rem; font-weight:800; color:#fff;
-            letter-spacing:-.02em; margin-bottom:30px;
+            font-family: 'Fira Code', monospace;
+            font-size: .72rem;
+            color: var(--muted);
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
         }
 
-        /* ----- ESTILO ALIEN 4 (APOYADO) ----- */
+        .project-card h3 {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -.02em;
+            margin-bottom: 30px;
+        }
+
+        /* ── ALIEN 4: apoyado con codo sobre el borde de la card ── */
         .alien-mascot {
             position: absolute;
-            bottom: -5px; 
-            left: -130px; 
-            height: 280px; 
-            z-index: 5;
+            /* Se alinea con el borde izquierdo del wrapper, apoyándose en él */
+            left:   -125px;
+            bottom: -8px;
+            height: 300px;
+            width:  auto;
+            z-index: 10;
             pointer-events: none;
-            filter: drop-shadow(0 0 15px rgba(0,255,102,0.3));
-            animation: float-alien 5s ease-in-out infinite;
+            /* Fondo blanco del PNG se elimina con mix-blend-mode */
+            mix-blend-mode: screen;
+            filter:
+                drop-shadow(-4px 0 12px rgba(0,255,102,0.35))
+                drop-shadow(0 8px 20px rgba(0,0,0,0.6));
+            animation: float-lean 5s ease-in-out infinite;
+            transform-origin: bottom center;
         }
 
-        @keyframes float-alien {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(-1deg); } 
+        @keyframes float-lean {
+            0%,100% { transform: translateY(0px) rotate(-1deg); }
+            50%      { transform: translateY(-8px) rotate(0deg); }
         }
 
         /* ══════════════════════════════════════════
@@ -468,50 +492,140 @@
         }
 
         /* ══════════════════════════════════════════
-           ABOUT & ALIEN 3 (ESCRITORIO)
+           ABOUT — ALIEN EN ESCRITORIO (2 COLUMNAS)
         ══════════════════════════════════════════ */
         .about-section {
-            padding:90px 0;
-            background:var(--bg2);
-            border-top:1px solid rgba(0,255,102,.12);
-            border-bottom:1px solid rgba(0,255,102,.12);
-            position: relative; /* Para poder posicionar al alien 3 */
-            overflow: visible;
+            padding: 90px 0;
+            background: var(--bg2);
+            border-top:    1px solid rgba(0,255,102,.12);
+            border-bottom: 1px solid rgba(0,255,102,.12);
+            overflow: hidden;
         }
-        .about-inner { max-width:780px; margin:0 auto; text-align:center; position: relative; z-index: 2; }
+
+        /* Layout de dos columnas */
+        .about-layout {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        /* ── Columna izquierda: escenario del alien ── */
+        .about-alien-col {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        /* El "escenario" con el escritorio */
+        .alien-desk-stage {
+            position: relative;
+            width: 300px;
+        }
+
+        /* Superficie del escritorio (barra con dots) */
+        .desk-surface {
+            position: absolute;
+            bottom: 0;
+            left: -10px;
+            right: -10px;
+            height: 18px;
+            background: linear-gradient(90deg, var(--card), rgba(0,255,102,0.08), var(--card));
+            border: 1px solid rgba(0,255,102,0.25);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0 12px;
+            box-shadow: 0 0 20px rgba(0,255,102,0.1);
+            z-index: 2;
+        }
+
+        .desk-dot {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: var(--neon);
+            opacity: 0.6;
+            display: inline-block;
+        }
+        .desk-dot:nth-child(2) { opacity: 0.35; }
+        .desk-dot:nth-child(3) { opacity: 0.15; }
+
+        /* El alien sobre el escritorio */
+        .alien-desk {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-height: 420px;
+            object-fit: contain;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 14px; /* Deja espacio para la barra del escritorio */
+            /* El PNG tiene fondo negro, screen lo hace transparente */
+            mix-blend-mode: screen;
+            filter:
+                drop-shadow(0 0 30px rgba(0,255,102,0.3))
+                drop-shadow(0 0 60px rgba(0,200,80,0.12));
+            animation: float-desk 6s ease-in-out infinite;
+        }
+
+        @keyframes float-desk {
+            0%,100% { transform: translateY(0px); }
+            50%      { transform: translateY(-12px); }
+        }
+
+        /* ── Columna derecha: texto ── */
+        .about-inner {
+            text-align: left;
+        }
+
+        .about-inner .section-title { margin-bottom: 24px; }
+
         .founders {
-            display:flex; gap:16px; justify-content:center;
-            flex-wrap:wrap; margin-bottom:30px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 28px;
         }
+
         .founder-chip {
-            display:inline-flex; align-items:center; gap:8px;
-            background:rgba(0,255,102,.07);
-            border:1px solid rgba(0,255,102,.2);
-            border-radius:50px; padding:9px 22px;
-            font-family:'Fira Code',monospace; font-size:.82rem; color:var(--neon);
-            transition:background .3s, border-color .3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0,255,102,.07);
+            border: 1px solid rgba(0,255,102,.2);
+            border-radius: 50px;
+            padding: 9px 22px;
+            font-family: 'Fira Code', monospace;
+            font-size: .82rem;
+            color: var(--neon);
+            transition: background .3s, border-color .3s;
         }
         .founder-chip:hover {
-            background:rgba(0,255,102,.13);
-            border-color:rgba(0,255,102,.45);
-        }
-        .about-section p { color:var(--muted); font-size:1.05rem; line-height:1.9; }
-
-        /* ----- ESTILO ALIEN 3 (ESCRITORIO) ----- */
-        .alien-desk {
-            position: absolute;
-            top: -120px; 
-            right: 0px; 
-            height: 350px; 
-            z-index: 10;
-            pointer-events: none; /* No interfiere con clics */
-            filter: drop-shadow(0 0 25px rgba(0,255,102,0.25));
-            animation: float-alien-alt 6s ease-in-out infinite;
+            background: rgba(0,255,102,.13);
+            border-color: rgba(0,255,102,.45);
         }
 
-        @keyframes float-alien-alt {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(1deg); } 
+        .about-section p {
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 1.9;
+        }
+
+        /* Badge UBB */
+        .ubb-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.74rem;
+            color: var(--muted);
+            border: 1px solid rgba(0,255,102,.1);
+            padding: 6px 16px;
+            border-radius: 50px;
+            margin-top: 24px;
+            letter-spacing: 0.05em;
         }
 
         /* ══════════════════════════════════════════
@@ -564,32 +678,45 @@
         /* ══════════════════════════════════════════
            RESPONSIVE
         ══════════════════════════════════════════ */
-        @media (max-width:768px) {
-            nav { display:none; }
-            .hero { padding:70px 0 50px; }
-            .hero-stats { gap:28px; }
-            .project-card { padding:40px 24px; }
-            #seccionApp { margin-inline:0; }
-            .modal { padding:32px 24px; }
-            .ig-link { font-size:1.4rem; }
-            
-            /* Ajustes para el Alien Apoyado en móviles */
+        @media (max-width: 768px) {
+            nav { display: none; }
+            .hero { padding: 70px 0 50px; }
+            .hero-stats { gap: 28px; }
+            .project-card { padding: 40px 24px; }
+            #seccionApp { margin-inline: 0; }
+            .modal { padding: 32px 24px; }
+            .ig-link { font-size: 1.4rem; }
+
+            /* Alien apoyado en móvil: más pequeño, centrado arriba de la card */
+            .portfolio-wrapper {
+                margin-left: 0;
+                display: block;
+            }
             .alien-mascot {
-                left: auto;
-                right: -10px; 
-                top: -120px; 
-                bottom: auto;
-                height: 150px;
-                opacity: 0.9;
+                position: relative;
+                left: auto; bottom: auto;
+                display: block;
+                height: 180px;
+                margin: 0 auto -20px auto;
+                animation: float-lean-sm 4s ease-in-out infinite;
+            }
+            @keyframes float-lean-sm {
+                0%,100% { transform: translateY(0); }
+                50%      { transform: translateY(-6px); }
             }
 
-            /* Ajustes para el Alien en Escritorio en móviles */
-            .alien-desk {
-                top: -80px;
-                right: -20px;
-                height: 180px;
-                opacity: 0.8;
+            /* About en móvil: columna única */
+            .about-layout {
+                grid-template-columns: 1fr;
+                gap: 0;
             }
+            .about-alien-col {
+                order: 2; /* El alien va debajo del texto en móvil */
+                margin-top: 40px;
+            }
+            .alien-desk-stage { width: 220px; }
+            .about-inner { text-align: center; }
+            .founders { justify-content: center; }
         }
     </style>
 </head>
@@ -672,18 +799,27 @@
     <div class="container">
         <div class="tag reveal">// Portafolio</div>
         <h2 class="section-title reveal">Nuestro Trabajo</h2>
-        
-        <div class="project-card reveal">
-            <img src="assets/imagen4.png" alt="Mascota Alien Dev apoyado" class="alien-mascot">
-            
-            <div style="position: relative; z-index: 10;">
+
+        <!-- Wrapper que contiene tanto el alien como la card -->
+        <div class="portfolio-wrapper reveal">
+
+            <!-- ALIEN 4: apoyado sobre el borde izquierdo de la card -->
+            <img src="assets/imagen4.png"
+                 alt="Alien apoyado revisando el proyecto"
+                 class="alien-mascot"
+                 aria-hidden="true">
+
+            <!-- Card del proyecto -->
+            <div class="project-card">
                 <p class="eyebrow">Último proyecto desarrollado</p>
                 <h3>Donato Studio</h3>
-                
-                <a href="https://donatostudio.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-solid">
+                <button class="btn btn-solid"
+                        onclick="window.open('https://donatostudio.vercel.app/','_blank','noopener,noreferrer')"
+                        aria-label="Abrir Donato Studio en nueva pestaña">
                     🔗 Visitar Proyecto Web
-                </a>
+                </button>
             </div>
+
         </div>
     </div>
 </section>
@@ -699,20 +835,47 @@
 <div class="divider" style="margin-bottom:0"></div>
 
 <section class="about-section z1" id="nosotros">
-    <div class="container" style="position: relative;">
-        <img src="assets/imagen3.png" alt="Mascota Alien Programando" class="alien-desk reveal">
-        
-        <div class="about-inner">
-            <div class="tag reveal">// Quiénes Somos</div>
-            <h2 class="section-title reveal">El Equipo</h2>
-            <div class="founders reveal">
-                <span class="founder-chip">👨‍💻 Martín Bustamante</span>
-                <span class="founder-chip">👨‍💻 Felipe Zúñiga</span>
+    <div class="container">
+
+        <div class="about-layout">
+
+            <!-- Columna izquierda: alien en el escritorio -->
+            <div class="about-alien-col">
+                <div class="alien-desk-stage">
+                    <!-- "Escritorio" decorativo -->
+                    <div class="desk-surface">
+                        <span class="desk-dot"></span>
+                        <span class="desk-dot"></span>
+                        <span class="desk-dot"></span>
+                    </div>
+                    <img src="assets/imagen3.png"
+                         alt="Alien programando en su escritorio"
+                         class="alien-desk"
+                         aria-hidden="true">
+                </div>
             </div>
-            <p class="reveal">
-                Hola, mucho gusto. Somos Martín y Felipe, estudiantes de Ingeniería Civil Informática (3er y 4to año) en la ciudad de Concepción. Nos dedicamos al desarrollo de páginas web y nos gustaría ofrecer nuestros servicios para apoyar a su organización en su presencia digital.<br><br>
-                Si tienen algún proyecto en mente o necesitan implementar un sitio web, no duden en contactarnos. Estaremos encantados de conversar sobre cómo podemos ayudarles. ¡Saludos!
-            </p>
+
+            <!-- Columna derecha: texto del equipo -->
+            <div class="about-inner">
+                <div class="tag reveal">// Quiénes Somos</div>
+                <h2 class="section-title reveal">El Equipo</h2>
+                <div class="founders reveal">
+                    <span class="founder-chip">👨‍💻 Martín Bustamante</span>
+                    <span class="founder-chip">👨‍💻 Felipe Zúñiga</span>
+                </div>
+                <p class="reveal">
+                    Hola, mucho gusto. Somos Martín y Felipe, estudiantes de
+                    Ingeniería Civil Informática de la Universidad del Bío-Bío
+                    (3er y 4to año) en Concepción. Nos dedicamos al desarrollo
+                    de páginas web y nos gustaría ofrecer nuestros servicios
+                    para apoyar a su organización en su presencia digital.<br><br>
+                    Si tienen algún proyecto en mente o necesitan implementar
+                    un sitio web, no duden en contactarnos. Estaremos
+                    encantados de conversar sobre cómo podemos ayudarles. ¡Saludos!
+                </p>
+                <span class="ubb-badge reveal">🎓 Universidad del Bío-Bío · Concepción</span>
+            </div>
+
         </div>
     </div>
 </section>
