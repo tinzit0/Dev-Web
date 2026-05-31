@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dev Web | Desarrollo Web en Concepción</title>
 
-    <!-- PWA -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#00ff66">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -538,9 +537,6 @@
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════
-     HEADER
-══════════════════════════════════════════ -->
 <header>
     <div class="container">
         <a href="#" class="logo-wrap">
@@ -556,9 +552,6 @@
     </div>
 </header>
 
-<!-- ══════════════════════════════════════════
-     HERO
-══════════════════════════════════════════ -->
 <section class="hero z1">
     <div class="hero-glow"></div>
     <div class="container">
@@ -590,9 +583,6 @@
     </div>
 </section>
 
-<!-- ══════════════════════════════════════════
-     SERVICES
-══════════════════════════════════════════ -->
 <section class="services-section z1" id="servicios">
     <div class="container">
         <div class="tag reveal">// Nuestros Servicios</div>
@@ -619,9 +609,6 @@
 
 <div class="divider"></div>
 
-<!-- ══════════════════════════════════════════
-     PORTFOLIO
-══════════════════════════════════════════ -->
 <section class="portfolio-section z1" id="portafolio">
     <div class="container">
         <div class="tag reveal">// Portafolio</div>
@@ -629,16 +616,13 @@
         <div class="project-card reveal">
             <p class="eyebrow">Último proyecto desarrollado</p>
             <h3>Donato Studio</h3>
-            <button class="btn btn-solid" onclick="window.open('https://donatostudio.vercel.app/', '_blank', 'noopener,noreferrer')">
+            <a href="https://donatostudio.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn btn-solid">
                 🔗 Visitar Proyecto Web
-            </button>
+            </a>
         </div>
     </div>
 </section>
 
-<!-- ══════════════════════════════════════════
-     PWA INSTALL
-══════════════════════════════════════════ -->
 <div class="container z1">
     <section id="seccionApp">
         <h2>📱 Lleva a Dev Web contigo</h2>
@@ -649,9 +633,6 @@
 
 <div class="divider" style="margin-bottom:0"></div>
 
-<!-- ══════════════════════════════════════════
-     ABOUT
-══════════════════════════════════════════ -->
 <section class="about-section z1" id="nosotros">
     <div class="container">
         <div class="about-inner">
@@ -669,9 +650,6 @@
     </div>
 </section>
 
-<!-- ══════════════════════════════════════════
-     INSTAGRAM
-══════════════════════════════════════════ -->
 <section class="ig-section z1">
     <div class="container">
         <p class="ig-label">Nuestra Presencia Digital</p>
@@ -681,18 +659,12 @@
     </div>
 </section>
 
-<!-- ══════════════════════════════════════════
-     FOOTER
-══════════════════════════════════════════ -->
 <footer class="z1">
     <div class="container">
         <p>&copy; 2026 Dev Web — Concepción, Chile. Todos los derechos reservados.</p>
     </div>
 </footer>
 
-<!-- ══════════════════════════════════════════
-     MODAL (reemplaza el feo alert del navegador)
-══════════════════════════════════════════ -->
 <div class="modal-overlay" id="modalOverlay">
     <div class="modal">
         <span class="modal-icon">📱</span>
@@ -716,9 +688,6 @@
     </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     SCRIPTS
-══════════════════════════════════════════ -->
 <script>
     /* ── Service Worker ─────────────────── */
     if ("serviceWorker" in navigator) {
