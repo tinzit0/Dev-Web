@@ -296,12 +296,14 @@
         ══════════════════════════════════════════ */
         .portfolio-section { padding: 90px 0; text-align: center; }
 
-        /* Wrapper que da espacio al alien a la derecha */
+        /* Wrapper centrado que contiene card + alien */
         .portfolio-wrapper {
             position: relative;
-            display: inline-block;   
-            margin-right: 140px;     /* Espacio para el alien más a la derecha */
-            margin-left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            /* El padding-right reserva espacio para el alien a la derecha */
+            padding-right: 120px;
         }
 
         .project-card {
@@ -348,13 +350,13 @@
             margin-bottom: 30px;
         }
 
-        /* ── ALIEN 4: apoyado a la derecha ── */
+        /* ── ALIEN 4: apoyado sobre el borde derecho de la card ── */
         .alien-mascot {
             position: absolute;
             left: auto;
-            right: -135px; /* Más a la derecha */
-            bottom: 10px;
-            height: 300px;
+            right: 0;        /* Pegado al borde derecho del wrapper */
+            bottom: 0px;
+            height: 290px;
             width:  auto;
             z-index: 10;
             pointer-events: none;
@@ -616,8 +618,21 @@
             border: 1px solid rgba(0,255,102,.1);
             padding: 6px 16px;
             border-radius: 50px;
-            margin-top: 24px;
+            margin-top: 10px;
             letter-spacing: 0.05em;
+        }
+
+        /* Contenedor para apilar los badges de universidades */
+        .badges-row {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            margin-top: 22px;
+        }
+        .about-inner .badges-row { align-items: flex-start; }
+        @media (max-width: 768px) {
+            .badges-row { align-items: center; }
         }
 
         /* ══════════════════════════════════════════
@@ -866,7 +881,10 @@
                     un sitio web, no duden en contactarnos. Estaremos
                     encantados de conversar sobre cómo podemos ayudarles. ¡Saludos!
                 </p>
-                <span class="ubb-badge reveal">🎓 Universidad del Bío-Bío · Concepción</span>
+                <div class="badges-row">
+                    <span class="ubb-badge reveal">🎓 Universidad del Bío-Bío · Concepción</span>
+                    <span class="ubb-badge reveal">🎓 Universidad San Sebastián · Concepción</span>
+                </div>
             </div>
 
         </div>
