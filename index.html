@@ -296,14 +296,14 @@
         ══════════════════════════════════════════ */
         .portfolio-section { padding: 90px 0; text-align: center; }
 
-        /* Wrapper centrado que contiene card + alien */
+        /* El wrapper tiene el ancho de la card + el ancho del alien juntos,
+           y se centra como bloque. El alien se posiciona dentro de él. */
         .portfolio-wrapper {
             position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            /* El padding-right reserva espacio para el alien a la derecha */
-            padding-right: 120px;
+            display: inline-flex;   /* Los hijos se colocan en fila */
+            align-items: flex-end;  /* Alien y card se alinean por abajo */
+            gap: 0;                 /* Sin gap: el alien se pega al borde */
+            margin: 0 auto;
         }
 
         .project-card {
@@ -311,7 +311,7 @@
             border: 1.5px solid var(--neon);
             border-radius: 20px;
             padding: 56px 52px 52px;
-            max-width: 620px;
+            width: 520px;
             box-shadow:
                 0 0 50px rgba(0,255,102,.07),
                 inset 0 0 80px rgba(0,255,102,.02);
@@ -319,6 +319,7 @@
             position: relative;
             overflow: hidden;
             text-align: center;
+            flex-shrink: 0;
         }
 
         .project-card::before {
@@ -350,22 +351,23 @@
             margin-bottom: 30px;
         }
 
-        /* ── ALIEN 4: apoyado sobre el borde derecho de la card ── */
+        /* ── ALIEN 4: en fila junto a la card, apoyado en su borde ── */
         .alien-mascot {
-            position: absolute;
-            left: auto;
-            right: 0;        /* Pegado al borde derecho del wrapper */
-            bottom: 0px;
+            display: block;
+            position: relative;        /* Fluye en el flex, no absolute */
             height: 290px;
-            width:  auto;
+            width: auto;
+            flex-shrink: 0;
+            margin-left: -18px;        /* Se solapa ligeramente con el borde */
+            margin-bottom: -2px;       /* Se asienta en la misma base que la card */
             z-index: 10;
             pointer-events: none;
             mix-blend-mode: screen;
             filter:
-                drop-shadow(-4px 0 12px rgba(0,255,102,0.35))
-                drop-shadow(0 8px 20px rgba(0,0,0,0.6));
+                drop-shadow(-6px 0 14px rgba(0,255,102,0.40))
+                drop-shadow(0 8px 20px rgba(0,0,0,0.5));
             animation: float-lean 5s ease-in-out infinite;
-            transform-origin: bottom center;
+            transform-origin: bottom left;
         }
 
         @keyframes float-lean {
@@ -618,21 +620,8 @@
             border: 1px solid rgba(0,255,102,.1);
             padding: 6px 16px;
             border-radius: 50px;
-            margin-top: 10px;
+            margin-top: 24px;
             letter-spacing: 0.05em;
-        }
-
-        /* Contenedor para apilar los badges de universidades */
-        .badges-row {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 8px;
-            margin-top: 22px;
-        }
-        .about-inner .badges-row { align-items: flex-start; }
-        @media (max-width: 768px) {
-            .badges-row { align-items: center; }
         }
 
         /* ══════════════════════════════════════════
@@ -694,25 +683,31 @@
             .modal { padding: 32px 24px; }
             .ig-link { font-size: 1.4rem; }
 
-            /* Alien apoyado en móvil: modificado hacia la derecha */
+            /* Alien apoyado en móvil: columna, alien arriba de la card */
             .portfolio-wrapper {
-                margin-right: 0;
-                display: block;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0;
+            }
+            .project-card {
+                width: 100%;
+                max-width: 100%;
+                order: 2;
             }
             .alien-mascot {
-                position: absolute;
-                left: auto;
-                right: -5px;     /* Modificado: bien pegado a la derecha */
-                top: -85px;      /* Modificado: asomándose desde arriba */
-                bottom: auto;
+                position: relative;
                 display: block;
-                height: 160px;
-                margin: 0;
+                height: 170px;
+                width: auto;
+                margin-left: 0;
+                margin-bottom: -16px;
+                order: 1;
                 animation: float-lean-sm 4s ease-in-out infinite;
             }
             @keyframes float-lean-sm {
-                0%,100% { transform: translateY(0); }
-                50%      { transform: translateY(-6px); }
+                0%,100% { transform: translateY(0) rotate(-1deg); }
+                50%      { transform: translateY(-6px) rotate(0deg); }
             }
 
             .about-layout {
@@ -881,10 +876,7 @@
                     un sitio web, no duden en contactarnos. Estaremos
                     encantados de conversar sobre cómo podemos ayudarles. ¡Saludos!
                 </p>
-                <div class="badges-row">
-                    <span class="ubb-badge reveal">🎓 Universidad del Bío-Bío · Concepción</span>
-                    <span class="ubb-badge reveal">🎓 Universidad San Sebastián · Concepción</span>
-                </div>
+                <span class="ubb-badge reveal">🎓 Universidad del Bío-Bío · Concepción</span>
             </div>
 
         </div>
