@@ -1,4 +1,4 @@
-const CACHE_NAME = "devweb-store-v3";
+const CACHE_NAME = "devweb-store-v4";
 const ASSETS = [
     "./",
     "./index.html",
@@ -8,11 +8,38 @@ const ASSETS = [
 ];
 
 // Instalar: guardar todo en caché
-self.addEventListener("install", e => {
-    e.waitUntil(
-        caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+self.addEventListener("fetch", e => {
+    const url = new URL(e.request.url);
+
+    if (url.origin !== location.origin) return;
+
+    // Network-first solo para documentos HTML
+    if (e.request.destination === "document") {
+        e.respondWith(
+            fetch(e.request)
+                .then(response => {
+                    const clone = response.clone();
+                    caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
+                    return response;
+                })
+                .catch(() => caches.match("./index.html")) // fallback offline
+        );
+        return;
+    }
+
+    // Cache-first para assets (imágenes, CSS, JS)
+    e.respondWith(
+        caches.match(e.request).then(cached => {
+            if (cached) return cached;
+            return fetch(e.request).then(response => {
+                if (response && response.status === 200 && response.type === "basic") {
+                    const clone = response.clone();
+                    caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
+                }
+                return response;
+            });
+        })
     );
-    self.skipWaiting();
 });
 
 // Activar: limpiar cachés viejos
