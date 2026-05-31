@@ -294,24 +294,36 @@
         /* ══════════════════════════════════════════
            PORTFOLIO — ALIEN APOYADO A LA DERECHA
         ══════════════════════════════════════════ */
+        /* ══════════════════════════════════════════
+           PORTFOLIO — CARD CENTRADA + ALIEN A LA DERECHA
+        ══════════════════════════════════════════ */
         .portfolio-section { padding: 90px 0; text-align: center; }
 
-        /* El wrapper tiene el ancho de la card + el ancho del alien juntos,
-           y se centra como bloque. El alien se posiciona dentro de él. */
+        /*
+          Grid de 3 columnas iguales:
+          [espacio vacío] | [card centrada] | [alien]
+          El espacio vacío izquierdo compensa el ancho del alien
+          para que la card quede visualmente centrada en la página.
+        */
         .portfolio-wrapper {
-            position: relative;
-            display: inline-flex;   /* Los hijos se colocan en fila */
-            align-items: flex-end;  /* Alien y card se alinean por abajo */
-            gap: 0;                 /* Sin gap: el alien se pega al borde */
+            display: grid;
+            grid-template-columns: 160px 1fr 160px;
+            align-items: end;       /* Todo se alinea por la base */
+            max-width: 820px;
             margin: 0 auto;
+            position: relative;
+        }
+
+        /* Columna izquierda vacía — solo para compensar */
+        .portfolio-wrapper::before {
+            content: '';
         }
 
         .project-card {
             background: var(--card);
             border: 1.5px solid var(--neon);
             border-radius: 20px;
-            padding: 56px 52px 52px;
-            width: 520px;
+            padding: 52px 48px 48px;
             box-shadow:
                 0 0 50px rgba(0,255,102,.07),
                 inset 0 0 80px rgba(0,255,102,.02);
@@ -319,7 +331,7 @@
             position: relative;
             overflow: hidden;
             text-align: center;
-            flex-shrink: 0;
+            grid-column: 2;   /* Siempre en la columna central */
         }
 
         .project-card::before {
@@ -351,20 +363,19 @@
             margin-bottom: 30px;
         }
 
-        /* ── ALIEN 4: en fila junto a la card, apoyado en su borde ── */
+        /* ── ALIEN: columna derecha, apoyado en el borde inferior de la card ── */
         .alien-mascot {
+            grid-column: 3;
             display: block;
-            position: relative;        /* Fluye en el flex, no absolute */
-            height: 290px;
+            height: 300px;
             width: auto;
-            flex-shrink: 0;
-            margin-left: -18px;        /* Se solapa ligeramente con el borde */
-            margin-bottom: -2px;       /* Se asienta en la misma base que la card */
-            z-index: 10;
+            justify-self: start;    /* Pegado al lado izquierdo de su columna */
+            margin-left: -22px;     /* Se solapa con el borde derecho de la card */
+            margin-bottom: 0;
             pointer-events: none;
             mix-blend-mode: screen;
             filter:
-                drop-shadow(-6px 0 14px rgba(0,255,102,0.40))
+                drop-shadow(-5px 0 14px rgba(0,255,102,0.40))
                 drop-shadow(0 8px 20px rgba(0,0,0,0.5));
             animation: float-lean 5s ease-in-out infinite;
             transform-origin: bottom left;
@@ -620,8 +631,20 @@
             border: 1px solid rgba(0,255,102,.1);
             padding: 6px 16px;
             border-radius: 50px;
-            margin-top: 24px;
             letter-spacing: 0.05em;
+            transition: border-color .3s, color .3s;
+        }
+        .ubb-badge:hover {
+            border-color: rgba(0,255,102,.3);
+            color: var(--text);
+        }
+
+        .badges-row {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            margin-top: 22px;
         }
 
         /* ══════════════════════════════════════════
@@ -683,32 +706,29 @@
             .modal { padding: 32px 24px; }
             .ig-link { font-size: 1.4rem; }
 
-            /* Alien apoyado en móvil: columna, alien arriba de la card */
+            /* Portfolio en móvil: colapsa a columna única, alien arriba */
             .portfolio-wrapper {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 0;
+                grid-template-columns: 1fr;
+                max-width: 100%;
             }
             .project-card {
-                width: 100%;
-                max-width: 100%;
+                grid-column: 1;
                 order: 2;
             }
             .alien-mascot {
-                position: relative;
-                display: block;
-                height: 170px;
-                width: auto;
-                margin-left: 0;
-                margin-bottom: -16px;
+                grid-column: 1;
                 order: 1;
+                justify-self: center;
+                height: 160px;
+                margin-left: 0;
+                margin-bottom: -14px;
                 animation: float-lean-sm 4s ease-in-out infinite;
             }
             @keyframes float-lean-sm {
                 0%,100% { transform: translateY(0) rotate(-1deg); }
                 50%      { transform: translateY(-6px) rotate(0deg); }
             }
+            .badges-row { align-items: center; }
 
             .about-layout {
                 grid-template-columns: 1fr;
@@ -804,16 +824,12 @@
         <div class="tag reveal">// Portafolio</div>
         <h2 class="section-title reveal">Nuestro Trabajo</h2>
 
-        <!-- Wrapper que contiene tanto el alien como la card -->
+        <!-- Wrapper: grid 3 cols [vacío | card | alien] -->
         <div class="portfolio-wrapper reveal">
 
-            <!-- ALIEN 4: apoyado sobre el borde derecho -->
-            <img src="assets/imagen4.png"
-                 alt="Alien apoyado revisando el proyecto"
-                 class="alien-mascot"
-                 aria-hidden="true">
+            <!-- Col 1: vacía (compensa el alien para centrar la card) -->
 
-            <!-- Card del proyecto -->
+            <!-- Col 2: Card del proyecto -->
             <div class="project-card">
                 <p class="eyebrow">Último proyecto desarrollado</p>
                 <h3>Donato Studio</h3>
@@ -823,6 +839,12 @@
                     🔗 Visitar Proyecto Web
                 </button>
             </div>
+
+            <!-- Col 3: ALIEN apoyado en el borde derecho de la card -->
+            <img src="assets/imagen4.png"
+                 alt="Alien apoyado revisando el proyecto"
+                 class="alien-mascot"
+                 aria-hidden="true">
 
         </div>
     </div>
@@ -876,7 +898,10 @@
                     un sitio web, no duden en contactarnos. Estaremos
                     encantados de conversar sobre cómo podemos ayudarles. ¡Saludos!
                 </p>
-                <span class="ubb-badge reveal">🎓 Universidad del Bío-Bío · Concepción</span>
+                <div class="badges-row">
+                    <span class="ubb-badge reveal">🎓 Universidad del Bío-Bío · Concepción</span>
+                    <span class="ubb-badge reveal">🎓 Universidad San Sebastián · Concepción</span>
+                </div>
             </div>
 
         </div>
