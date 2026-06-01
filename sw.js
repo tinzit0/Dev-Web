@@ -1,4 +1,4 @@
-const CACHE_NAME = "devweb-store-v5";
+const CACHE_NAME = "devweb-store-v6";
 const ASSETS = [
     "./",
     "./index.html",
