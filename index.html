@@ -420,15 +420,21 @@
 
         /* ── ALIEN izquierdo: espejado, columna 1 ── */
         .alien-mascot-left {
-            grid-column: 1;
-            justify-self: end;      /* Pegado al lado derecho de su columna */
-            margin-right: -22px;    /* Se solapa con el borde izquierdo de la card */
-            transform: scaleX(-1);  /* Espejado para que mire hacia la card */
+            grid-column: 1 !important;  /* Sobreescribe el grid-column:3 heredado */
+            justify-self: end;
+            margin-right: -22px;
+            margin-left: 0;
+            height: 300px;
+            width: auto;
+            display: block;
+            pointer-events: none;
+            mix-blend-mode: screen;
+            transform: scaleX(-1);
+            transform-origin: bottom right;
             filter:
                 drop-shadow(5px 0 14px rgba(0,255,102,0.40))
                 drop-shadow(0 8px 20px rgba(0,0,0,0.5));
             animation: float-lean-left 5s ease-in-out infinite;
-            transform-origin: bottom right;
         }
         @keyframes float-lean-left {
             0%,100% { transform: scaleX(-1) translateY(0px) rotate(-1deg); }

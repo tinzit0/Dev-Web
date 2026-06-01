@@ -1,4 +1,4 @@
-const CACHE_NAME = "devweb-store-v5";
+const CACHE_NAME = "devweb-store-v6";
 const ASSETS = [
     "./",
     "./index.html",
@@ -18,14 +18,19 @@ self.addEventListener("install", e => {
     self.skipWaiting();
 });
 
-// Activar: limpiar cachés viejos
+// Activar: limpiar cachés viejos y notificar a clientes
 self.addEventListener("activate", e => {
     e.waitUntil(
         caches.keys().then(keys =>
             Promise.all(
                 keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
             )
-        )
+        ).then(() => {
+            // Fuerza recarga en todas las pestañas abiertas
+            return self.clients.matchAll({ type: "window" }).then(clients => {
+                clients.forEach(client => client.navigate(client.url));
+            });
+        })
     );
     self.clients.claim();
 });
@@ -34,7 +39,6 @@ self.addEventListener("activate", e => {
 self.addEventListener("fetch", e => {
     const url = new URL(e.request.url);
 
-    // Solo interceptar requests del mismo origen
     if (url.origin !== location.origin) return;
 
     // Network-first para documentos HTML (siempre muestra lo más nuevo)
@@ -46,7 +50,7 @@ self.addEventListener("fetch", e => {
                     caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
                     return response;
                 })
-                .catch(() => caches.match("./index.html")) // fallback offline
+                .catch(() => caches.match("./index.html"))
         );
         return;
     }
