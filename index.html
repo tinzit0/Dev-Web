@@ -418,9 +418,21 @@
             transform-origin: bottom left;
         }
 
-        @keyframes float-lean {
-            0%,100% { transform: translateY(0px) rotate(-1deg); }
-            50%      { transform: translateY(-8px) rotate(0deg); }
+        /* ── ALIEN izquierdo: espejado, columna 1 ── */
+        .alien-mascot-left {
+            grid-column: 1;
+            justify-self: end;      /* Pegado al lado derecho de su columna */
+            margin-right: -22px;    /* Se solapa con el borde izquierdo de la card */
+            transform: scaleX(-1);  /* Espejado para que mire hacia la card */
+            filter:
+                drop-shadow(5px 0 14px rgba(0,255,102,0.40))
+                drop-shadow(0 8px 20px rgba(0,0,0,0.5));
+            animation: float-lean-left 5s ease-in-out infinite;
+            transform-origin: bottom right;
+        }
+        @keyframes float-lean-left {
+            0%,100% { transform: scaleX(-1) translateY(0px) rotate(-1deg); }
+            50%      { transform: scaleX(-1) translateY(-8px) rotate(0deg); }
         }
 
         /* ══════════════════════════════════════════
@@ -761,6 +773,7 @@
                 margin-bottom: -14px;
                 animation: float-lean-sm 4s ease-in-out infinite;
             }
+            .alien-mascot-left { display: none; }
             @keyframes float-lean-sm {
                 0%,100% { transform: translateY(0) rotate(-1deg); }
                 50%      { transform: translateY(-6px) rotate(0deg); }
@@ -869,10 +882,14 @@
         <div class="tag reveal">// Portafolio</div>
         <h2 class="section-title reveal">Nuestro Trabajo</h2>
 
-        <!-- Wrapper: grid 3 cols [vacío | card | alien] -->
+        <!-- Wrapper: grid 3 cols [alien | card | alien] -->
         <div class="portfolio-wrapper reveal">
 
-            <!-- Col 1: vacía (compensa el alien para centrar la card) -->
+            <!-- Col 1: ALIEN izquierdo espejado -->
+            <img src="assets/imagen4.png"
+                 alt="Alien apoyado revisando el proyecto"
+                 class="alien-mascot alien-mascot-left"
+                 aria-hidden="true">
 
             <!-- Col 2: Card del proyecto -->
             <div class="project-card">
@@ -885,7 +902,7 @@
                 </button>
             </div>
 
-            <!-- Col 3: ALIEN apoyado en el borde derecho de la card -->
+            <!-- Col 3: ALIEN derecho original -->
             <img src="assets/imagen4.png"
                  alt="Alien apoyado revisando el proyecto"
                  class="alien-mascot"
