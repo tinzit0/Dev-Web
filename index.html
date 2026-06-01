@@ -1,4 +1,4 @@
-}<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -330,12 +330,10 @@
 
         .portfolio-section { padding: 90px 0; text-align: center; }
 
-        /* Wrapper con position relative para ubicar aliens absolutos */
         .portfolio-wrapper {
             position: relative;
-            max-width: 560px;
+            max-width: 500px;
             margin: 0 auto;
-            padding: 0 130px; /* espacio para los aliens a los lados */
         }
 
         .project-card {
@@ -379,21 +377,22 @@
             color: #fff;
             letter-spacing: -.02em;
             margin-bottom: 30px;
+            white-space: nowrap;
         }
 
-        /* ── ALIENS: posición absoluta a cada lado de la card ── */
+        /* ── ALIENS: posición absoluta a cada lado, sin solaparse con la card ── */
         .alien-mascot,
         .alien-mascot-left {
             position: absolute;
             bottom: 0;
-            height: 280px;
+            height: 260px;
             width: auto;
             pointer-events: none;
             mix-blend-mode: screen;
         }
 
         .alien-mascot {
-            right: -110px;
+            right: -160px;
             filter: drop-shadow(-5px 0 14px rgba(0,255,102,0.50)) drop-shadow(0 8px 20px rgba(0,0,0,0.5));
             animation: float-lean 5s ease-in-out infinite;
             transform-origin: bottom left;
@@ -404,7 +403,7 @@
         }
 
         .alien-mascot-left {
-            left: -110px;
+            left: -160px;
             transform: scaleX(-1);
             filter: drop-shadow(5px 0 14px rgba(0,255,102,0.50)) drop-shadow(0 8px 20px rgba(0,0,0,0.5));
             animation: float-lean-left 5s ease-in-out infinite;
@@ -415,16 +414,17 @@
             50%      { transform: scaleX(-1) translateY(-10px) rotate(0deg); }
         }
 
-        @media (max-width: 768px) {
-            .portfolio-wrapper { padding: 0; max-width: 100%; }
+        @media (max-width: 900px) {
             .alien-mascot-left { display: none; }
             .alien-mascot {
-                position: relative;
-                right: auto; bottom: auto;
-                display: block;
-                height: 160px;
-                margin: 0 auto -14px;
+                right: -80px;
+                height: 180px;
             }
+        }
+        @media (max-width: 600px) {
+            .portfolio-wrapper { max-width: 92%; }
+            .alien-mascot { display: none; }
+            .project-card h3 { white-space: normal; font-size: 2rem; }
         }
 
         /* ══════════════════════════════════════════
