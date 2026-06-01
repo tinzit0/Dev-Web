@@ -254,6 +254,31 @@
         }
 
         /* ══════════════════════════════════════════
+           ALIEN UFO — hero derecha
+        ══════════════════════════════════════════ */
+        .hero-alien-ufo {
+            position: absolute;
+            right: clamp(0px, 4vw, 60px);
+            top: 50%;
+            transform: translateY(-50%);
+            width: clamp(100px, 14vw, 180px);
+            pointer-events: none;
+            mix-blend-mode: screen;
+            filter:
+                drop-shadow(0 0 18px rgba(0,255,102,0.5))
+                drop-shadow(0 0 40px rgba(0,255,102,0.2));
+            animation: ufo-float 6s ease-in-out infinite;
+            z-index: 2;
+        }
+        @keyframes ufo-float {
+            0%,100% { transform: translateY(-50%) rotate(-4deg); }
+            50%      { transform: translateY(calc(-50% - 14px)) rotate(3deg); }
+        }
+        @media (max-width: 900px) {
+            .hero-alien-ufo { display: none; }
+        }
+
+        /* ══════════════════════════════════════════
            SERVICES
         ══════════════════════════════════════════ */
         .services-section { padding:90px 0; text-align:center; }
@@ -761,8 +786,12 @@
     </div>
 </header>
 
-<section class="hero z1">
+<section class="hero z1" style="position:relative;">
     <div class="hero-glow"></div>
+    <img src="assets/imagen5.png"
+         alt="Alien en OVNI saludando"
+         class="hero-alien-ufo"
+         aria-hidden="true">
     <div class="container">
         <div class="tag">// Concepción, Chile</div>
         <h1>SOMOS<br><span class="neon">DEV WEB</span></h1>

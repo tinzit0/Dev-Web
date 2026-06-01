@@ -1,19 +1,43 @@
-const CACHE_NAME = "devweb-store-v4";
+const CACHE_NAME = "devweb-store-v5";
 const ASSETS = [
     "./",
     "./index.html",
     "./manifest.json",
     "./assets/imagen1.png",
-    "./assets/imagen2.png"
+    "./assets/imagen2.png",
+    "./assets/imagen3.png",
+    "./assets/imagen4.png",
+    "./assets/imagen5.png"
 ];
 
 // Instalar: guardar todo en caché
+self.addEventListener("install", e => {
+    e.waitUntil(
+        caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+    );
+    self.skipWaiting();
+});
+
+// Activar: limpiar cachés viejos
+self.addEventListener("activate", e => {
+    e.waitUntil(
+        caches.keys().then(keys =>
+            Promise.all(
+                keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
+            )
+        )
+    );
+    self.clients.claim();
+});
+
+// Fetch: network-first para HTML, cache-first para assets
 self.addEventListener("fetch", e => {
     const url = new URL(e.request.url);
 
+    // Solo interceptar requests del mismo origen
     if (url.origin !== location.origin) return;
 
-    // Network-first solo para documentos HTML
+    // Network-first para documentos HTML (siempre muestra lo más nuevo)
     if (e.request.destination === "document") {
         e.respondWith(
             fetch(e.request)
@@ -37,42 +61,7 @@ self.addEventListener("fetch", e => {
                     caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
                 }
                 return response;
-            });
-        })
-    );
-});
-
-// Activar: limpiar cachés viejos
-self.addEventListener("activate", e => {
-    e.waitUntil(
-        caches.keys().then(keys =>
-            Promise.all(
-                keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
-            )
-        )
-    );
-    self.clients.claim();
-});
-
-// Fetch: cache-first para assets propios, network-first para externos
-self.addEventListener("fetch", e => {
-    const url = new URL(e.request.url);
-
-    // Solo interceptar requests del mismo origen
-    if (url.origin !== location.origin) return;
-
-    e.respondWith(
-        caches.match(e.request).then(cached => {
-            if (cached) return cached;
-            return fetch(e.request).then(response => {
-                // Guardar en caché solo respuestas válidas del mismo origen
-                if (response && response.status === 200 && response.type === "basic") {
-                    const clone = response.clone();
-                    caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
-                }
-                return response;
             }).catch(() => {
-                // Offline fallback
                 if (e.request.destination === "document") {
                     return caches.match("./index.html");
                 }
