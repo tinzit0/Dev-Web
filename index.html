@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+}<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -719,43 +719,6 @@
             font-family:'Fira Code',monospace; letter-spacing:.04em;
         }
 
-        /* ══════════════════════════════════════════
-           MARCIANOS FLOTANTES — se mueven por la página
-        ══════════════════════════════════════════ */
-        .floating-alien {
-            position: fixed;
-            width: 90px;
-            pointer-events: none;
-            mix-blend-mode: screen;
-            filter: drop-shadow(0 0 14px rgba(0,255,102,0.6));
-            z-index: 50;
-            opacity: 0.85;
-        }
-        .floating-alien-1 {
-            animation: drift1 28s linear infinite;
-        }
-        .floating-alien-2 {
-            animation: drift2 35s linear infinite;
-            transform: scaleX(-1);
-            width: 75px;
-            opacity: 0.7;
-        }
-        @keyframes drift1 {
-            0%   { top: 80vh; left: -120px;  transform: rotate(-5deg); }
-            25%  { top: 20vh; left: 30vw;    transform: rotate(5deg); }
-            50%  { top: 60vh; left: 70vw;    transform: rotate(-3deg); }
-            75%  { top: 10vh; left: 85vw;    transform: rotate(6deg); }
-            100% { top: 80vh; left: -120px;  transform: rotate(-5deg); }
-        }
-        @keyframes drift2 {
-            0%   { top: 10vh; right: -120px; left: auto; transform: scaleX(-1) rotate(4deg); }
-            30%  { top: 70vh; left: 75vw;    transform: scaleX(-1) rotate(-4deg); }
-            60%  { top: 30vh; left: 20vw;    transform: scaleX(-1) rotate(6deg); }
-            100% { top: 10vh; right: -120px; left: auto; transform: scaleX(-1) rotate(4deg); }
-        }
-        @media (max-width: 768px) {
-            .floating-alien { width: 55px; }
-        }
         @keyframes fadeUp {
             from { opacity:0; transform:translateY(28px); }
             to   { opacity:1; transform:translateY(0); }
@@ -983,8 +946,7 @@
 </section>
 
 <!-- Marcianos flotantes por toda la página -->
-<img src="assets/imagen5.png" class="floating-alien floating-alien-1" aria-hidden="true" alt="">
-<img src="assets/imagen5.png" class="floating-alien floating-alien-2" aria-hidden="true" alt="">
+
 
 <footer class="z1">
     <div class="container">
