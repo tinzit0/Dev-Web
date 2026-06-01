@@ -415,15 +415,15 @@
             transform-origin: bottom left;
         }
 
-        /* ── ALIEN izquierdo: espejado, columna 1 ── */
+        /* ── ALIEN izquierdo: espejado, columna 1, estilos propios ── */
         .alien-mascot-left {
-            grid-column: 1 !important;  /* Sobreescribe el grid-column:3 heredado */
-            justify-self: end;
-            margin-right: -22px;
-            margin-left: 0;
+            grid-column: 1;
+            display: block;
             height: 300px;
             width: auto;
-            display: block;
+            justify-self: end;
+            margin-right: -22px;
+            margin-bottom: 0;
             pointer-events: none;
             mix-blend-mode: screen;
             transform: scaleX(-1);
@@ -891,7 +891,7 @@
             <!-- Col 1: ALIEN izquierdo espejado -->
             <img src="assets/imagen4.png"
                  alt="Alien apoyado revisando el proyecto"
-                 class="alien-mascot alien-mascot-left"
+                 class="alien-mascot-left"
                  aria-hidden="true">
 
             <!-- Col 2: Card del proyecto -->
