@@ -45,6 +45,7 @@
             font-family: 'Poppins', sans-serif;
             line-height: 1.7;
             overflow-x: hidden;
+            position: relative;
         }
 
         body::before {
@@ -66,8 +67,19 @@
         }
 
         /* ══════════════════════════════════════════
-           UTILITIES
+           FONDOS Y ANIMACIONES
         ══════════════════════════════════════════ */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0; 
+            pointer-events: none; 
+            opacity: 0.6; 
+        }
+
         .z1 { position: relative; z-index: 1; }
 
         .container {
@@ -192,19 +204,32 @@
             pointer-events:none; z-index:0;
         }
 
-        .hero h1 {
-            font-size: clamp(3rem, 9vw, 6.5rem);
-            font-weight:800; color:#fff;
-            line-height:1.02; letter-spacing:-.03em;
-            margin-bottom:20px; position:relative; z-index:1;
+        #particle-container {
+            width: 100%; 
+            height: 360px; 
+            position: relative; 
+            z-index: 1; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            margin-bottom: 20px;
+            animation: fadeUp .7s ease both;
         }
-        .hero h1 .neon {
-            color: var(--neon);
-            text-shadow:
-                0 0 20px rgba(0,255,102,.7),
-                0 0 60px rgba(0,255,102,.25),
-                0 0 120px rgba(0,255,102,.1);
+        #particle-canvas {
+            width: 100%;
+            height: 100%;
         }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
         .hero p {
             font-size:1.1rem; color:var(--muted); font-weight:300;
             max-width:520px; margin:0 auto 36px;
@@ -253,9 +278,6 @@
             box-shadow: 0 24px 70px rgba(0,0,0,.7), 0 0 50px rgba(0,255,102,.08);
         }
 
-        /* ══════════════════════════════════════════
-           ALIEN UFO — hero izquierda y derecha
-        ══════════════════════════════════════════ */
         .hero-alien-left,
         .hero-alien-right {
             position: absolute;
@@ -328,6 +350,9 @@
         .card h3 { font-size:1.1rem; font-weight:600; color:#fff; margin-bottom:12px; }
         .card p  { color:var(--muted); font-size:.92rem; line-height:1.7; }
 
+        /* ══════════════════════════════════════════
+           PORTFOLIO
+        ══════════════════════════════════════════ */
         .portfolio-section { padding: 90px 0; text-align: center; }
 
         .portfolio-wrapper {
@@ -541,7 +566,7 @@
         }
 
         /* ══════════════════════════════════════════
-           ABOUT — ALIEN EN ESCRITORIO (2 COLUMNAS)
+           ABOUT — ALIEN EN ESCRITORIO
         ══════════════════════════════════════════ */
         .about-section {
             padding: 90px 0;
@@ -716,7 +741,6 @@
             from { opacity:0; transform:translateY(28px); }
             to   { opacity:1; transform:translateY(0); }
         }
-        .hero h1    { animation: fadeUp .7s ease both; }
         .hero p     { animation: fadeUp .7s .15s ease both; }
         .hero .btn  { animation: fadeUp .7s .25s ease both; }
         .hero-stats { animation: fadeUp .7s .35s ease both; }
@@ -754,6 +778,9 @@
 </head>
 <body>
 
+<!-- Canvas de fondo para Lluvia Inversa -->
+<canvas id="bg-canvas" aria-hidden="true"></canvas>
+
 <header>
     <div class="container">
         <a href="#" class="logo-wrap">
@@ -769,19 +796,20 @@
     </div>
 </header>
 
-<section class="hero z1" style="position:relative;">
+<section class="hero z1">
     <div class="hero-glow"></div>
-    <img src="assets/imagen5.png"
-         alt="Alien en OVNI"
-         class="hero-alien-left"
-         aria-hidden="true">
-    <img src="assets/imagen5.png"
-         alt="Alien en OVNI"
-         class="hero-alien-right"
-         aria-hidden="true">
+    <img src="assets/imagen5.png" alt="Alien en OVNI" class="hero-alien-left" aria-hidden="true">
+    <img src="assets/imagen5.png" alt="Alien en OVNI" class="hero-alien-right" aria-hidden="true">
+    
     <div class="container">
         <div class="tag">// Concepción, Chile</div>
-        <h1>SOMOS<br><span class="neon">DEV WEB</span></h1>
+        
+        <!-- Contenedor del Título con Partículas -->
+        <div id="particle-container">
+            <h1 class="sr-only">SOMOS DEV WEB</h1>
+            <canvas id="particle-canvas"></canvas>
+        </div>
+
         <p>Especialistas en Desarrollo Web &amp; Software. Transformamos ideas en soluciones digitales eficientes y de alto impacto.</p>
         
         <a href="https://www.instagram.com/deb_web_ccp/?hl=es" target="_blank" rel="noopener noreferrer" class="btn btn-solid" style="position: relative; z-index: 10;">
@@ -841,7 +869,6 @@
         <h2 class="section-title reveal">Nuestro Trabajo</h2>
 
         <div class="portfolio-wrapper reveal">
-            <!-- Card del proyecto -->
             <div class="project-card">
                 <p class="eyebrow">Último proyecto desarrollado</p>
                 <h3>Donato Studio</h3>
@@ -853,18 +880,8 @@
             </div>
         </div>
 
-        <!-- Alien izquierdo -->
-        <img src="assets/imagen4.png"
-             alt=""
-             class="alien-mascot-left"
-             aria-hidden="true">
-
-        <!-- Alien derecho -->
-        <img src="assets/imagen4.png"
-             alt=""
-             class="alien-mascot"
-             aria-hidden="true">
-
+        <img src="assets/imagen4.png" alt="" class="alien-mascot-left" aria-hidden="true">
+        <img src="assets/imagen4.png" alt="" class="alien-mascot" aria-hidden="true">
     </div>
 </section>
 
@@ -880,10 +897,7 @@
 
 <section class="about-section z1" id="nosotros">
     <div class="container">
-
         <div class="about-layout">
-
-            <!-- Columna izquierda: alien en el escritorio -->
             <div class="about-alien-col">
                 <div class="alien-desk-stage">
                     <div class="desk-surface">
@@ -891,14 +905,10 @@
                         <span class="desk-dot"></span>
                         <span class="desk-dot"></span>
                     </div>
-                    <img src="assets/imagen3.png"
-                         alt="Alien programando en su escritorio"
-                         class="alien-desk"
-                         aria-hidden="true">
+                    <img src="assets/imagen3.png" alt="Alien programando en su escritorio" class="alien-desk" aria-hidden="true">
                 </div>
             </div>
 
-            <!-- Columna derecha: texto del equipo -->
             <div class="about-inner">
                 <div class="tag reveal">// Quiénes Somos</div>
                 <h2 class="section-title reveal">El Equipo</h2>
@@ -907,21 +917,14 @@
                     <span class="founder-chip">👨‍💻 Felipe Zúñiga</span>
                 </div>
                 <p class="reveal">
-                    Hola, mucho gusto. Somos Martín y Felipe, estudiantes de
-                    Ingeniería Civil Informática de la Universidad del Bío-Bío
-                    (3er y 4to año) en Concepción. Nos dedicamos al desarrollo
-                    de páginas web y nos gustaría ofrecer nuestros servicios
-                    para apoyar a su organización en su presencia digital.<br><br>
-                    Si tienen algún proyecto en mente o necesitan implementar
-                    un sitio web, no duden en contactarnos. Estaremos
-                    encantados de conversar sobre cómo podemos ayudarles. ¡Saludos!
+                    Hola, mucho gusto. Somos Martín y Felipe, estudiantes de Ingeniería Civil Informática de la Universidad del Bío-Bío (3er y 4to año) en Concepción. Nos dedicamos al desarrollo de páginas web y nos gustaría ofrecer nuestros servicios para apoyar a su organización en su presencia digital.<br><br>
+                    Si tienen algún proyecto en mente o necesitan implementar un sitio web, no duden en contactarnos. Estaremos encantados de conversar sobre cómo podemos ayudarles. ¡Saludos!
                 </p>
                 <div class="badges-row">
                     <span class="ubb-badge reveal">🎓 Universidad del Bío-Bío · Concepción</span>
                     <span class="ubb-badge reveal">🎓 Universidad San Sebastián · Concepción</span>
                 </div>
             </div>
-
         </div>
     </div>
 </section>
@@ -929,15 +932,11 @@
 <section class="ig-section z1">
     <div class="container">
         <p class="ig-label">Nuestra Presencia Digital</p>
-        
         <a href="https://www.instagram.com/deb_web_ccp/?hl=es" target="_blank" rel="noopener noreferrer" class="ig-link" style="position: relative; z-index: 10;">
             📸 @deb_web_ccp
         </a>
     </div>
 </section>
-
-<!-- Marcianos flotantes por toda la página -->
-
 
 <footer class="z1">
     <div class="container">
@@ -968,6 +967,7 @@
     </div>
 </div>
 
+<!-- Lógica General (PWA, Menú, Revelado) -->
 <script>
     if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register("sw.js")
@@ -1041,6 +1041,232 @@
     }, { threshold: 0.12 });
 
     document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
+</script>
+
+<!-- Script: Animación de Partículas (Título DEV WEB) -->
+<script>
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    
+    const config = {
+        text1: "SOMOS",
+        text2: "DEV WEB",
+        particleSize: 2.2,
+        density: 4, 
+        color: "#d8e8f0", 
+        highlightColor: "#00ff66", 
+        repelRadius: 120, 
+        scatter: 190, 
+        returnSpeed: 0.05 
+    };
+
+    let particles = [];
+    let mouse = { x: null, y: null, radius: config.repelRadius };
+
+    window.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        mouse.x = e.x - rect.left;
+        mouse.y = e.y - rect.top;
+    });
+    window.addEventListener('mouseout', () => {
+        mouse.x = null;
+        mouse.y = null;
+    });
+
+    function initParticles() {
+        particles = [];
+        canvas.width = canvas.parentElement.offsetWidth;
+        canvas.height = canvas.parentElement.offsetHeight || 360;
+
+        ctx.fillStyle = "white";
+        let fontSize = Math.min(Math.max(window.innerWidth * 0.09, 48), 104);
+        ctx.font = `800 ${fontSize}px Poppins, sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        
+        let lineSpacing = fontSize * 1.1;
+        ctx.fillText(config.text1, canvas.width / 2, canvas.height / 2 - lineSpacing/2 + 10);
+        ctx.fillText(config.text2, canvas.width / 2, canvas.height / 2 + lineSpacing/2 + 10);
+
+        const textCoordinates = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (let y = 0; y < textCoordinates.height; y += config.density) {
+            for (let x = 0; x < textCoordinates.width; x += config.density) {
+                if (textCoordinates.data[(y * 4 * textCoordinates.width) + (x * 4) + 3] > 128) {
+                    let startX = x + (Math.random() - 0.5) * config.scatter * 10;
+                    let startY = y + (Math.random() - 0.5) * config.scatter * 10;
+                    let isHighlight = Math.random() > 0.8;
+                    particles.push(new Particle(startX, startY, x, y, isHighlight));
+                }
+            }
+        }
+    }
+
+    class Particle {
+        constructor(x, y, targetX, targetY, isHighlight) {
+            this.x = x;
+            this.y = y;
+            this.baseX = targetX;
+            this.baseY = targetY;
+            this.size = config.particleSize;
+            this.color = isHighlight ? config.highlightColor : config.color;
+        }
+        draw() {
+            ctx.fillStyle = this.color;
+            if (this.color === config.highlightColor) {
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = config.highlightColor;
+            } else {
+                ctx.shadowBlur = 0;
+            }
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.closePath();
+            ctx.fill();
+        }
+        update() {
+            let dx = mouse.x - this.x;
+            let dy = mouse.y - this.y;
+            let distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < mouse.radius && mouse.x !== null) {
+                let force = (mouse.radius - distance) / mouse.radius;
+                this.x -= (dx / distance) * force * 5;
+                this.y -= (dy / distance) * force * 5;
+            } else {
+                if (this.x !== this.baseX) this.x -= (this.x - this.baseX) * config.returnSpeed;
+                if (this.y !== this.baseY) this.y -= (this.y - this.baseY) * config.returnSpeed;
+            }
+        }
+    }
+
+    function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].draw();
+            particles[i].update();
+        }
+        requestAnimationFrame(animateParticles);
+    }
+
+    window.addEventListener('resize', () => {
+        clearTimeout(window.resizeTimerParticles);
+        window.resizeTimerParticles = setTimeout(initParticles, 200);
+    });
+
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            initParticles();
+            animateParticles();
+        }, 500); 
+    });
+</script>
+
+<!-- Script: Animación de Fondo (Lluvia Inversa Interactiva) -->
+<script>
+    const bgCanvas = document.getElementById('bg-canvas');
+    const ctxBg = bgCanvas.getContext('2d');
+    
+    let bgWidth, bgHeight;
+    const floatingElements = [];
+    const chars = ['{ }', '</>', '[ ]', '=>', ';', '👽', '🛸', '0', '1', '()'];
+
+    // Variables para la interacción del clic
+    let clickX = null;
+    let clickY = null;
+    let clickActive = false;
+
+    // Detectar clics en cualquier parte de la pantalla
+    window.addEventListener('click', (e) => {
+        clickX = e.clientX;
+        clickY = e.clientY;
+        clickActive = true;
+        // El efecto de "explosión" dura un breve momento
+        setTimeout(() => clickActive = false, 150); 
+    });
+
+    function resizeBg() {
+        bgWidth = bgCanvas.width = window.innerWidth;
+        bgHeight = bgCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeBg);
+    resizeBg();
+
+    class FloatingChar {
+        constructor() {
+            this.reset();
+            // Esparcir aleatoriamente al cargar por primera vez
+            this.y = Math.random() * bgHeight; 
+        }
+
+        reset() {
+            this.x = Math.random() * bgWidth;
+            this.y = bgHeight + 50; 
+            this.size = Math.random() * 16 + 10; 
+            this.baseSpeed = Math.random() * 1 + 0.3; 
+            this.opacity = Math.random() * 0.3 + 0.05; 
+            this.char = chars[Math.floor(Math.random() * chars.length)];
+            
+            // Velocidades actuales (se alteran con el clic)
+            this.vx = 0;
+            this.vy = -this.baseSpeed;
+        }
+
+        update() {
+            // Reaccionar al clic si el usuario pulsó la pantalla
+            if (clickActive) {
+                let dx = this.x - clickX;
+                let dy = this.y - clickY;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                let impactRadius = 250; // Área de impacto del clic
+                
+                if (distance < impactRadius) {
+                    // Empuja los elementos lejos del cursor
+                    let force = (impactRadius - distance) / impactRadius;
+                    this.vx += (dx / distance) * force * 15;
+                    this.vy += (dy / distance) * force * 15;
+                }
+            }
+
+            // Aplicar velocidades
+            this.x += this.vx;
+            this.y += this.vy;
+
+            // Fricción: reduce la velocidad horizontal y restaura la vertical suavemente
+            this.vx *= 0.95; 
+            this.vy = this.vy * 0.95 + (-this.baseSpeed) * 0.05;
+
+            // Reaparecer si salen de la pantalla
+            if (this.y < -50) this.reset();
+            // Mantenerlos dentro de los bordes laterales si salen disparados
+            if (this.x < -50) this.x = bgWidth + 50;
+            if (this.x > bgWidth + 50) this.x = -50;
+        }
+
+        draw() {
+            ctxBg.fillStyle = `rgba(0, 255, 102, ${this.opacity})`;
+            ctxBg.font = `600 ${this.size}px 'Fira Code', monospace`;
+            ctxBg.textAlign = "center";
+            ctxBg.fillText(this.char, this.x, this.y);
+        }
+    }
+
+    // Crear 50 elementos flotantes
+    for (let i = 0; i < 50; i++) {
+        floatingElements.push(new FloatingChar());
+    }
+
+    function animateBackground() {
+        ctxBg.clearRect(0, 0, bgWidth, bgHeight);
+        floatingElements.forEach(el => {
+            el.update();
+            el.draw();
+        });
+        requestAnimationFrame(animateBackground);
+    }
+    
+    animateBackground();
 </script>
 
 </body>
