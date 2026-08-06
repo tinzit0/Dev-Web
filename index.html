@@ -21,6 +21,7 @@
         ══════════════════════════════════════════ */
         :root {
             --neon:        #00ff66;
+            --electric:    #96f702; /* Color de tu referencia eléctrica */
             --neon-dim:    rgba(0,255,102,0.12);
             --neon-mid:    rgba(0,255,102,0.30);
             --neon-glow:   rgba(0,255,102,0.55);
@@ -30,7 +31,7 @@
             --card-border: rgba(0,255,102,0.10);
             --text:        #d8e8f0;
             --muted:       #5a7080;
-            --r:           14px;
+            --r:           16px; /* Borde de tarjeta ligeramente más curvo */
         }
 
         /* ══════════════════════════════════════════
@@ -149,7 +150,7 @@
         .btn-solid:hover { background: transparent; color: var(--neon); }
 
         /* ══════════════════════════════════════════
-           HEADER
+           HEADER & DOCK NAV
         ══════════════════════════════════════════ */
         header {
             position: sticky; top:0; z-index:200;
@@ -179,13 +180,31 @@
         }
         .logo-text em { color: var(--neon); font-style:normal; }
 
-        nav { display:flex; gap:28px; }
-        nav a {
-            font-family:'Fira Code',monospace; font-size:.78rem;
-            color:var(--muted); text-decoration:none; letter-spacing:.05em;
-            transition:color .25s;
+        nav { 
+            display: flex; 
+            gap: 28px; 
+            align-items: center; 
+            padding: 10px 20px; 
+            border-radius: 20px;
         }
-        nav a:hover { color:var(--neon); }
+        
+        nav a {
+            font-family: 'Fira Code', monospace; 
+            font-size: .78rem;
+            color: var(--muted); 
+            text-decoration: none; 
+            letter-spacing: .05em;
+            transition: color 0.25s, transform 0.15s ease-out, margin 0.15s ease-out; 
+            will-change: transform, margin;
+            display: inline-block;
+            transform-origin: center bottom; 
+            position: relative;
+        }
+        
+        nav a:hover { 
+            color: var(--neon); 
+            text-shadow: 0 0 12px rgba(0,255,102,0.6);
+        }
 
         /* ══════════════════════════════════════════
            HERO
@@ -313,7 +332,7 @@
         }
 
         /* ══════════════════════════════════════════
-           SERVICES
+           SERVICES (ELECTRIC BORDER CARDS - CHAOTIC)
         ══════════════════════════════════════════ */
         .services-section { padding:90px 0; text-align:center; }
         .services-grid {
@@ -321,26 +340,41 @@
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap:24px; margin-top:0;
         }
+        
         .card {
-            background:var(--card);
-            border:1px solid var(--card-border);
-            border-radius:var(--r);
-            padding:44px 32px;
-            text-align:center;
-            transition:transform .3s, border-color .3s, box-shadow .3s;
-            position:relative; overflow:hidden;
+            background: var(--card); /* Fondo oscuro central */
+            border: none;
+            border-radius: var(--r);
+            padding: 44px 32px;
+            text-align: center;
+            transition: transform 0.3s;
+            position: relative;
+            z-index: 1; /* Permite que el pseudoelemento quede detrás */
         }
+
+        /* 1. Borde Eléctrico (Pseudo-elemento distorsionado por SVG) */
         .card::before {
-            content:'';
-            position:absolute; top:0; left:0;
-            width:100%; height:3px;
-            background:linear-gradient(90deg, transparent, var(--neon), transparent);
-            opacity:0; transition:opacity .3s;
+            content: '';
+            position: absolute;
+            inset: -2px; /* Se asoma ligeramente fuera del borde */
+            border: 2.5px solid var(--electric); /* El color base del rayo */
+            border-radius: calc(var(--r) + 2px);
+            z-index: -1;
             pointer-events: none;
+            /* El filtro SVG aplica el ruido fractal (turbulence) para crear las puntas */
+            filter: url(#electric-filter);
+            opacity: 0.45;
+            transition: opacity 0.3s ease;
         }
-        .card:hover { transform:translateY(-10px); border-color:rgba(0,255,102,.4); }
-        .card:hover::before { opacity:1; }
-        .card:hover { box-shadow: 0 20px 50px rgba(0,255,102,.07), 0 0 0 1px rgba(0,255,102,.1); }
+
+        .card:hover { 
+            transform: translateY(-10px); 
+        }
+        
+        /* Intensifica la electricidad al pasar el cursor */
+        .card:hover::before { 
+            opacity: 1; 
+        }
 
         .card-icon {
             font-family:'Fira Code',monospace; font-size:2.2rem;
@@ -781,17 +815,42 @@
 <!-- Canvas de fondo para Lluvia Inversa -->
 <canvas id="bg-canvas" aria-hidden="true"></canvas>
 
+<!-- DEFINICIÓN DEL FILTRO SVG ELÉCTRICO (Invisible en pantalla) -->
+<svg width="0" height="0" style="position: absolute; z-index: -1;" aria-hidden="true">
+    <defs>
+        <!-- x/y/width/height generosos para que el resplandor no se corte en los bordes -->
+        <filter id="electric-filter" x="-50%" y="-50%" width="200%" height="200%">
+            <!-- El ruido fractal es lo que genera la forma "rota" y azarosa -->
+            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" result="noise" id="turbulence-electric" />
+            <!-- Desplaza el borde según el ruido fractal -->
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="8" xChannelSelector="R" yChannelSelector="G" result="displaced" />
+            
+            <!-- Creamos el resplandor verde clonando y difuminando -->
+            <feGaussianBlur in="displaced" stdDeviation="5" result="blur" />
+            <feComponentTransfer in="blur" result="glow">
+                <feFuncA type="linear" slope="1.5" />
+            </feComponentTransfer>
+            
+            <!-- Juntamos el borde original desplazado con su resplandor -->
+            <feMerge>
+                <feMergeNode in="glow" />
+                <feMergeNode in="displaced" />
+            </feMerge>
+        </filter>
+    </defs>
+</svg>
+
 <header>
     <div class="container">
         <a href="#" class="logo-wrap">
             <img src="assets/imagen1.png" alt="Logo Dev Web">
             <span class="logo-text">DEV<em>.</em>WEB</span>
         </a>
-        <nav>
+        <nav id="dock-nav">
             <a href="#servicios">Servicios</a>
             <a href="#portafolio">Portafolio</a>
             <a href="#nosotros">Nosotros</a>
-            <a href="https://www.instagram.com/deb_web_ccp/?hl=es" target="_blank" rel="noopener noreferrer" style="position: relative; z-index: 10;">Instagram</a>
+            <a href="https://www.instagram.com/deb_web_ccp/?hl=es" target="_blank" rel="noopener noreferrer">Instagram</a>
         </nav>
     </div>
 </header>
@@ -1043,6 +1102,54 @@
     document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
 </script>
 
+<!-- Script: Animación de Rayos Caóticos (Electric Border) -->
+<script>
+    const electricTurbulence = document.getElementById('turbulence-electric');
+    // Actualizamos el 'seed' del ruido fractal cada 70ms para dar el efecto de electricidad inestable
+    setInterval(() => {
+        if(electricTurbulence) {
+            electricTurbulence.setAttribute('seed', Math.floor(Math.random() * 100));
+        }
+    }, 70);
+</script>
+
+<!-- Script: Animación Dock Menú de Navegación -->
+<script>
+    const navDock = document.getElementById('dock-nav');
+    const dockLinks = navDock.querySelectorAll('a');
+
+    navDock.addEventListener('mousemove', (e) => {
+        dockLinks.forEach(link => {
+            const rect = link.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const distance = Math.abs(e.clientX - centerX);
+            const maxDistance = 140; 
+            
+            if (distance < maxDistance) {
+                const force = (maxDistance - distance) / maxDistance; 
+                const dockScale = 1 + Math.pow(force, 1.5) * 0.7; 
+                const dockMargin = Math.pow(force, 1.5) * 18; 
+                
+                link.style.transform = `scale(${dockScale})`;
+                link.style.margin = `0 ${dockMargin}px`;
+                link.style.zIndex = Math.round(force * 10);
+            } else {
+                link.style.transform = `scale(1)`;
+                link.style.margin = `0`;
+                link.style.zIndex = 1;
+            }
+        });
+    });
+
+    navDock.addEventListener('mouseleave', () => {
+        dockLinks.forEach(link => {
+            link.style.transform = `scale(1)`;
+            link.style.margin = `0`;
+            link.style.zIndex = 1;
+        });
+    });
+</script>
+
 <!-- Script: Animación de Partículas (Título DEV WEB) -->
 <script>
     const canvas = document.getElementById('particle-canvas');
@@ -1172,17 +1279,14 @@
     const floatingElements = [];
     const chars = ['{ }', '</>', '[ ]', '=>', ';', '👽', '🛸', '0', '1', '()'];
 
-    // Variables para la interacción del clic
     let clickX = null;
     let clickY = null;
     let clickActive = false;
 
-    // Detectar clics en cualquier parte de la pantalla
     window.addEventListener('click', (e) => {
         clickX = e.clientX;
         clickY = e.clientY;
         clickActive = true;
-        // El efecto de "explosión" dura un breve momento
         setTimeout(() => clickActive = false, 150); 
     });
 
@@ -1196,7 +1300,6 @@
     class FloatingChar {
         constructor() {
             this.reset();
-            // Esparcir aleatoriamente al cargar por primera vez
             this.y = Math.random() * bgHeight; 
         }
 
@@ -1208,38 +1311,31 @@
             this.opacity = Math.random() * 0.3 + 0.05; 
             this.char = chars[Math.floor(Math.random() * chars.length)];
             
-            // Velocidades actuales (se alteran con el clic)
             this.vx = 0;
             this.vy = -this.baseSpeed;
         }
 
         update() {
-            // Reaccionar al clic si el usuario pulsó la pantalla
             if (clickActive) {
                 let dx = this.x - clickX;
                 let dy = this.y - clickY;
                 let distance = Math.sqrt(dx * dx + dy * dy);
-                let impactRadius = 250; // Área de impacto del clic
+                let impactRadius = 250; 
                 
                 if (distance < impactRadius) {
-                    // Empuja los elementos lejos del cursor
                     let force = (impactRadius - distance) / impactRadius;
                     this.vx += (dx / distance) * force * 15;
                     this.vy += (dy / distance) * force * 15;
                 }
             }
 
-            // Aplicar velocidades
             this.x += this.vx;
             this.y += this.vy;
 
-            // Fricción: reduce la velocidad horizontal y restaura la vertical suavemente
             this.vx *= 0.95; 
             this.vy = this.vy * 0.95 + (-this.baseSpeed) * 0.05;
 
-            // Reaparecer si salen de la pantalla
             if (this.y < -50) this.reset();
-            // Mantenerlos dentro de los bordes laterales si salen disparados
             if (this.x < -50) this.x = bgWidth + 50;
             if (this.x > bgWidth + 50) this.x = -50;
         }
@@ -1252,7 +1348,6 @@
         }
     }
 
-    // Crear 50 elementos flotantes
     for (let i = 0; i < 50; i++) {
         floatingElements.push(new FloatingChar());
     }
