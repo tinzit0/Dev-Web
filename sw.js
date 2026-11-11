@@ -1,13 +1,14 @@
-const CACHE_NAME = "devweb-store-v8";
+const CACHE_NAME = "devweb-store-v11";
 const ASSETS = [
     "./",
     "./index.html",
     "./manifest.json",
     "./assets/imagen1.png",
-    "./assets/imagen2.png",
-    "./assets/imagen3.png",
-    "./assets/imagen4.png",
-    "./assets/imagen5.png"
+    "./assets/proyectos/bko.jpg",
+    "./assets/proyectos/yorka.jpg",
+    "./assets/proyectos/hipso.jpg",
+    "./assets/proyectos/hydrart.jpg",
+    "./assets/proyectos/donato.jpg"
 ];
 
 // Instalar: guardar todo en caché
